@@ -20,7 +20,8 @@ import java.util.UUID;
 @Table(name = "notes")
 public class Note implements BaseEntity<UUID> {
 
-private static final long serialVersionUID = 3728386939882596015L;
+    private static final long serialVersionUID = 3728386939882596015L;
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
