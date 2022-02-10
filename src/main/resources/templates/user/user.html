@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:c="">
+<head>
+    <title>User</title>
+    <thymeleaf th:include="headers::head"/>
+</head>
+<body>
+    <div class="container">
+        <div th:insert="navigation::nav"></div>
+        <br>
+        <div class="row">
+            <h3>User</p></h3>
+            <div class="row">
+                <div class="mb-3">
+                    <label for="id" class="form-label">id</label>
+                    <input type="text" class="form-control" disabled name="id" id="id" placeholder="${user.id}" value="${user.id}">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">name</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="${user.name}" value="${user.name}">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">password</label>
+                    <input type="text" class="form-control" name="password" id="password" placeholder="${user.password}" value="${user.password}">
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">role</label>
+                    <select class="form-select"
+                            aria-label="Default select example"
+                            id="role" name="role">
+
+                                    <option value=user>user</option>
+                                    <option value=admin>admin</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button onclick="save()" type="submit" class="btn btn-primary">Save</button>
+    </div>
+</body>
+</html>
