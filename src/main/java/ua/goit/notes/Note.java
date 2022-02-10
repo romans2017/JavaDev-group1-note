@@ -1,4 +1,3 @@
-/*
 package ua.goit.notes;
 
 import lombok.AllArgsConstructor;
@@ -35,4 +34,3 @@ public class Note implements BaseEntity<UUID> {
     @Column(name = "description", length = 10000)
     private String description;
 }
-*/
