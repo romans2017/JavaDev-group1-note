@@ -1,3 +1,4 @@
+
 package ua.goit.notes;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Table(name = "notes")
 public class Note implements BaseEntity<UUID> {
 
+
     private static final long serialVersionUID = -475982250350685554L;
 
     @Id
@@ -34,3 +36,4 @@ public class Note implements BaseEntity<UUID> {
     @Column(name = "description", length = 10000)
     private String description;
 }
+
