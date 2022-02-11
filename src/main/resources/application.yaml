@@ -6,36 +6,51 @@ server:
   port: 9999
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   datasource:
-    url: jdbc:h2:mem:note
+    url: jdbc:h2:mem:nms
     username: admin
     password:
     driverClassName: org.h2.Driver
   h2:
     console.enabled: true
     console.path: /h2
-
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
-    hibernate:
-      ddl-auto: validate
-  flyway:
-    locations: classpath:db/migration/h2
+    open-in-view: false
+#    hibernate:
+#      ddl-auto: create
 ---
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: jdbc:postgresql://notesmanagementsystem.cos2rygghoik.us-east-1.rds.amazonaws.com:5432/NMS
     username: ${USER_NAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    jpa:
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
-      show-sql: true
-      generate-ddl: false
-      hibernate:
-        ddl-auto: validate
-  flyway:
-    locations: classpath:db/migration/postgre
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+---
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/nms?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDateTimeCode=false&amp&serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true
+    username: root
+    password: Fusion
+  jpa:
+   show-sql: true
+   open-in-view: false
+   hibernate:
+     ddl-auto: create

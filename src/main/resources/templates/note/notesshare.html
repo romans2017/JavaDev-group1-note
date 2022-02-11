@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>NoteShare</title>
+    <thymeleaf th:include="headers::head"/>
+</head>
+<body>
+<div><br> <br></div>
+<div class="container">
+    <div class="row">
+    </div>
+    <div class="card border-primary mb-3" style="max-width: 40rem;">
+            <div class="card-header">Note by User</div>
+            <div class="card-body">
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                </div>
+            </div>
+
+        <div class="row">
+            <div class="mb-3">
+                <label for="name">Note name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="${note.name}" value="${note.name}">
+            </div>
+            <div class="form-group">
+                <label for="text" class="form-label mt-4">Note text</label>
+                <textarea class="form-control" id="text" rows="3"></textarea>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
