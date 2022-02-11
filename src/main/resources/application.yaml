@@ -21,6 +21,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+flyway:
+  locations: resources/db/migration/h2
 ---
 spring:
   profiles: prod
@@ -35,3 +37,5 @@ spring:
       generate-ddl: false
       hibernate:
         ddl-auto: validate
+flyway:
+  locations: resources/db/migration/postgre
