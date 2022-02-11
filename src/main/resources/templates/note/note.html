@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Note</title>
+    <thymeleaf th:include="headers::head"/>
+</head>
+<body>
+    <div class="container">
+        <div th:insert="navigation::nav"></div>
+        <br>
+        <div class="row">
+            <h3>Note</h3>
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+
+                </div>
+            </div>
+        </div><div class="row"><p> </p></div>
+<!--        <form:form id="form">-->
+            <div class="row">
+                <div class="mb-3">
+                    <label for="id">id</label>
+                    <input type="text" class="form-control" disabled name="id" id="id" placeholder="${note.id}" value="${note.id}">
+                </div>
+                <div class="mb-3">
+                    <label for="name">Note name</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="${note.name}" value="${note.name}">
+                </div>
+                <div class="form-group">
+                    <label for="text" class="form-label mt-4">Note text</label>
+                    <textarea class="form-control" id="text" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <legend class="mt-4">Access type</legend>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            privat
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                            public
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+<!--        </form:form>-->
+    </div>
+</body>
+</html>
