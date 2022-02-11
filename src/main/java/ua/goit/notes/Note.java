@@ -22,10 +22,10 @@ public class Note implements BaseEntity<UUID> {
     private static final long serialVersionUID = 3728386939882596015L;
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Type(type = "uuid-char")
-    @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
+   // @Type(type = "uuid-char")
+  //  @Column(name = "id", columnDefinition = "VARCHAR(36)")
     private UUID id;
 
     @Column(name = "name", length = 100)
