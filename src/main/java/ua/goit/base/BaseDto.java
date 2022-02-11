@@ -2,6 +2,6 @@ package ua.goit.base;
 
 import java.util.UUID;
 
-public interface Dto {
+public interface BaseDto {
     UUID getId();
 }

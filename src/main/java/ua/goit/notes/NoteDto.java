@@ -2,7 +2,7 @@ package ua.goit.notes;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ua.goit.base.Dto;
+import ua.goit.base.BaseDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor(force = true)
-public class NoteDto implements Dto {
+public class NoteDto implements BaseDto {
 
     private UUID id;
 
