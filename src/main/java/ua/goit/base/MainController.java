@@ -30,6 +30,11 @@ public class MainController {
         return "note/note";
     }
 
+    @GetMapping("/note/noteshare")
+    public String noteshare() {
+        return "note/notesshare";
+    }
+
     @GetMapping("/users")
     public String users() {
         return "user/users";
