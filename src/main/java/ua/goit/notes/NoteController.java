@@ -16,6 +16,11 @@ public class NoteController {
     public String getAllNotes(Model model){
         List<Note> all = noteService.findAll();
         model.addAttribute("notes",all);
-        return "notes";
+        return "note/notes";
+    }
+    @GetMapping("/note/create")
+    public String saveNote(Model model){
+        model.addAttribute("note",new Note());
+        return "note/create_note";
     }
 }

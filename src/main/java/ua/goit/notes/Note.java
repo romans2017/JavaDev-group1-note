@@ -22,10 +22,7 @@ public class Note implements BaseEntity<UUID> {
     private static final long serialVersionUID = 6174182882601741785L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
-   // @Type(type = "uuid-char")
-  //  @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "name", length = 100)
@@ -33,4 +30,8 @@ public class Note implements BaseEntity<UUID> {
 
     @Column(name = "description", length = 10000)
     private String description;
+    @Column(name = "type")
+
+    @Enumerated(EnumType.STRING)
+    private AccssesType accssesType;
 }

@@ -1,6 +1,6 @@
 package ua.goit.base;
 
-/*
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
@@ -29,4 +29,4 @@ public abstract class BaseService <T extends BaseEntity, UUID>{
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }
-}*/
+}
