@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Data
@@ -23,15 +24,18 @@ public class Note implements BaseEntity<UUID> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "serial")
     private UUID id;
 
     @Column(name = "name", length = 100)
+    @NotBlank
     private String name;
 
     @Column(name = "description", length = 10000)
+    @NotBlank
     private String description;
-    @Column(name = "type")
 
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private AccssesType accssesType;
 }
