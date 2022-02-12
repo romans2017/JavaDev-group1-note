@@ -50,7 +50,9 @@ public class MainController {
   public String users(Model model) {
     List<User> users = userService.findAll();
     model.addAttribute("users", users);
+    System.out.println("Users = " + users);
     model.addAttribute("roles", init());
+    System.out.println("Roles = " + init());
     return "user/users";
   }
 

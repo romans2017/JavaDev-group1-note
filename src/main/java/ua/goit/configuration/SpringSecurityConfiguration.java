@@ -21,6 +21,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http){
         http.csrf().disable()
-                .authorizeRequests().anyRequest().permitAll();
+            .authorizeRequests()
+//            .antMatchers("/h2/**").permitAll()
+            .anyRequest().permitAll();
     }
 }

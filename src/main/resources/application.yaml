@@ -17,6 +17,7 @@ spring:
   h2:
     console.enabled: true
     console.path: /h2
+# ;DB_CLOSE_ON_EXIT=FALSE
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
