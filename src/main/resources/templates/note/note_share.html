@@ -1,12 +1,13 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html  xmlns:th="https://www.thymeleaf.org/">
 <head>
-    <title>NoteShare</title>
-    <thymeleaf th:include="headers::head"/>
+    <title> Show note</title>
+    <thymeleaf th:include="headers::head"></thymeleaf>
 </head>
 <body>
 <div><br> <br></div>
 <div class="container">
     <div class="row">
+        <h2 th:text="${note.name}"></h2>
     </div>
     <div class="card border-primary mb-3" style="max-width: 40rem;">
             <div class="card-header">Note by User</div>
@@ -17,13 +18,8 @@
             </div>
 
         <div class="row">
-            <div class="mb-3">
-                <label for="name">Note name</label>
-                <input type="text" class="form-control" name="name" id="name" placeholder="${note.name}" value="${note.name}">
-            </div>
             <div class="form-group">
-                <label for="text" class="form-label mt-4">Note text</label>
-                <textarea class="form-control" id="text" rows="3"></textarea>
+                <textarea class="form-control" id="text" readonly rows="20" th:text="${note.description}"></textarea>
             </div>
         </div>
         </div>

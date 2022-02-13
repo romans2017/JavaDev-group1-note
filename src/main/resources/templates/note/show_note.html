@@ -5,6 +5,9 @@
 </head>
 <body>
 <div th:insert="navigation::nav"></div>
+<div class="mb-3">
+    <input type="hidden" class="form-control" id="id" value="{id}" th:field="*{id}">
+</div>
 <div><br> <br></div>
 <div class="container">
     <div class="card border-primary mb-3" style="max-width: 40rem;">
@@ -22,8 +25,11 @@
             </div>
         </div>
     </div>
-    <div>
-        <a class="btn btn-primary" type="button" href="/note/list">Back </a>
+    <div class="row">
+        <div class="form-group">
+            <a class="btn btn-primary" type="button" th:href="'/note/edit_note/' + ${note.id}">Edit</a>
+            <a class="btn btn-primary" type="button" href="/note/list">Back </a>
+        </div>
     </div>
 </div>
 </body>
