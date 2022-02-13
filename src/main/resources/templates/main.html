@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Main</title>
     <thymeleaf th:include="headers::head"/>
@@ -7,7 +7,9 @@
 <body>
 <div th:insert="navigation::nav"></div>
 <div>
-    <h4>Welcome <span th:text="${login}"></span></h4>
+    <h1><span th:text="${welcomeMsg}"></span></h1>
+    <h4>Welcome <span th:text="${userName}"></span></h4>
+
 </div>
 </body>
 </html>

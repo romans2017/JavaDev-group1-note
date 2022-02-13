@@ -1,7 +1,8 @@
-<html xmlns:c="" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Users</title>
-    <thymeleaf th:include="headers::head"/>
+    <title>Users page</title>
+    <thymeleaf th:replace="headers :: head" />
 </head>
 <body>
 <ul th:include="navigation::nav"></ul>
@@ -13,18 +14,21 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">name</th>
-                <th scope="col">role</th>
+                <th scope="col">№</th>
+                <th scope="col">User name</th>
+                <th scope="col">roles</th>
                 <th scope="col">action</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="user" items="${users}">
-                <tr>
-                    <td><c:out value = "${user.id}"/></td>
-                    <td><c:out value = "${user.lastName}"/></td>
-                    <td><c:out value = "${user.role}"/></td>
+                <tr th:each ="user,i : ${users}">
+                    <td th:text = "${i.index + 1}"></td>
+                    <td th:text = "${user.userName}"></td>
+                    <td id="roles">
+                        <ul th:each="role : ${user.roles}">
+                            <li th:text="${role.name}"></li>
+                        </ul>
+                    </td>
                     <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <div class="btn-group me-2" role="group" aria-label="Second group">
@@ -34,7 +38,6 @@
                         </div>
                     </td>
                 </tr>
-            </c:forEach>
             </tbody>
         </table>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">

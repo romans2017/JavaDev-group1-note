@@ -1,7 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Authorization</title>
-    <thymeleaf th:include="headers::head"/>
+    <thymeleaf th:include="headers::head"></thymeleaf>
 </head>
 <body>
 <div><br> <br> <br></div>
@@ -12,12 +14,11 @@
         <div class="card-header">Authorization</div>
         <div class="card-body">
             <h4>Log in with your account</h4>
-<!--            <form:form action="/login" method="POST">-->
+            <form th:action="@{/login}" method="POST">
                 <div class="mb-3">
-                    <label class="form-label" for="name">login</label>
-                    <input type="name" name="name" id="name" class="form-control" />
+                    <label class="form-label" for="username">login</label>
+                    <input type="text" name="name" id="username" class="form-control" />
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label" for="password">password</label>
                     <input type="password" name="password" id="password" class="form-control" />
@@ -30,7 +31,7 @@
                 <p class="text-center text-muted mt-5 mb-0">or
                     <a href="/registration" class="fw-bold text-body"><u>Register here</u></a>
                 </p>
-<!--            </form:form>-->
+            </form>
         </div>
     </div>
 </div>
