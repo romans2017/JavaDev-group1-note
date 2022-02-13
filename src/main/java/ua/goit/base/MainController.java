@@ -20,7 +20,7 @@ public class MainController {
         return "/registration";
     }
 
-    @GetMapping("/notes")
+    /*@GetMapping("/notes")
     public String notes() {
         return "note/notes";
     }
@@ -33,7 +33,7 @@ public class MainController {
     @GetMapping("/note/noteshare")
     public String noteshare() {
         return "note/notesshare";
-    }
+    }*/
 
     @GetMapping("/users")
     public String users() {
