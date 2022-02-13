@@ -9,8 +9,8 @@ import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.UUID;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -33,9 +33,9 @@ public class Note implements BaseEntity<UUID> {
     @NotBlank
     private String name;
 
-    @Column(name = "description", length = 10000)
+    @Column(name = "text", length = 10000)
     @NotBlank
-    private String description;
+    private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)

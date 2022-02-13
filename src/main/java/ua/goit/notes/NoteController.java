@@ -22,9 +22,9 @@ public class NoteController {
 
     @GetMapping("/list")
     public String getAllNotes(Model model) {
-        List<Note> all = noteService.findAll();
-        model.addAttribute("notes", all);
-        model.addAttribute("countNotes", all == null ? 0 : all.size());
+        List<Note> notes = noteService.findAll();
+        model.addAttribute("notes", notes);
+        model.addAttribute("countNotes", notes == null ? 0 : notes.size());
         return "note/notes";
     }
 

@@ -1,9 +1,10 @@
-package ua.goit.notes;
+package ua.goit.users;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 @Repository
-public interface NoteRepository extends CrudRepository<Note, UUID> {
+public interface UserRepository extends CrudRepository<User, UUID>{
+  User findByName(String name);
 }
