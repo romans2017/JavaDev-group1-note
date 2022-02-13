@@ -1,63 +1,30 @@
 package ua.goit.base;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ua.goit.roles.*;
-import ua.goit.users.*;
+
+import java.util.Map;
 
 @Controller
 public class MainController {
 
-  @Autowired
-  UserService userService;
+  @Value("${myconfig.welcome.message}")
+  private String welcomeMsg;
+  @Value("${myconfig.welcome.img}")
+  private String welcomeImg;
+  @Value("${msg.title}")
+  private String title;
 
-  @Autowired
-  RoleService roleService;
-
-  private List<Role> init() {
-    return roleService.findAll();
-  }
-
-  @GetMapping(value = {"/", "/index"})
-  public String index() {
-    return "/login";
-  }
-
-  @GetMapping("/login")
-  public String login() {
-    return "/login";
-  }
-
-  @GetMapping("/registration")
-  public String register() {
-    return "/registration";
-  }
-
-  @GetMapping("/notes")
-  public String notes() {
-    return "note/notes";
-  }
-
-  @GetMapping("/notes/note")
-  public String note() {
-    return "note/note";
-  }
-
-  @GetMapping("/users")
-  public String users(Model model) {
-    List<User> users = userService.findAll();
-    model.addAttribute("users", users);
-    System.out.println("Users = " + users);
-    model.addAttribute("roles", init());
-    System.out.println("Roles = " + init());
-    return "user/users";
-  }
-
-  @GetMapping("/users/user")
-  public String user() {
-    return "user/user";
+  @GetMapping("/")
+  public String mainPage(Authentication authentication,
+      Map<String, Object> model
+  ) {
+    model.put("userName", authentication.getName());
+    model.put("welcomeMsg", welcomeMsg);
+    model.put("welcomeImg", welcomeImg);
+    model.put("title", title);
+    return "main";
   }
 }
