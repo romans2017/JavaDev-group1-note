@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main</title>
+    <thymeleaf th:include="headers::head"/>
+</head>
+<body>
+<div th:insert="navigation::nav"></div>
+<div>
+<!--    <h1><span th:text="${welcomeMsg}"></span></h1>-->
+    <h4>Welcome <span th:text="${userName}"></span></h4>
+
+</div>
+</body>
+</html>

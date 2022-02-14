@@ -1,0 +1,3 @@
+--update users
+--set password = crypt(password, gen_salt('bf'))
+--where id = (select id from users where user_name = 'admin');
