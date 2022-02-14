@@ -1,41 +1,56 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:c="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User</title>
-    <thymeleaf th:include="headers::head"/>
+    <title th:text="${add} ? 'Create User' : 'Edit User'"></title>
+    <thymeleaf th:replace="headers :: head"></thymeleaf>
 </head>
 <body>
-    <div class="container">
-        <div th:insert="navigation::nav"></div>
-        <br>
+<div th:insert="navigation::nav"></div>
+<div class="container">
+    <br>
+    <div class="row">
+    </div>
+    <div class="row">
+        <h2 id="edit_page" th:text="${add} ? 'Create User:' : 'Edit User:'"></h2>
+        <form th:action="${add} ? @{/users/add} : @{/users/{userId}(userId=${user.id})}"
+              th:object="${user}" method="POST">
         <div class="row">
-            <h3>User</p></h3>
+                <br/>
+            <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input type="hidden" disabled class="form-control" id="id" th:utext="${user.id}">
+            </div>
+            <div class="mb-3">
+                <label for="userName" class="form-label">User name</label>
+                <input type="text" class="form-control" id="userName" th:field="*{userName}" placeholder="User name">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
+                <div class="alert alert-danger" th:if="${errorUniqueUserName}" th:utext="${errorUniqueUserName}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" th:field="*{password}">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+            </div>
+            <div class="mb-3">
+                <label for="roles" class="form-label">role</label>
+                <select class="form-select" multiple="multiple" id="roles" th:field="*{roles}">
+                    <option th:each="role : ${roles}"
+                            th:value="${{role.id}}"
+                            th:utext="${role.name}"
+                            th:selected="${roles == role.id}">
+                </select>
+                <div class="alert alert-danger" th:if="${errorRoles}" th:utext="${errorRoles}"></div>
+            </div>
             <div class="row">
-                <div class="mb-3">
-                    <label for="id" class="form-label">id</label>
-                    <input type="text" class="form-control" disabled name="id" id="id" placeholder="${user.id}" value="${user.id}">
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">name</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="${user.name}" value="${user.name}">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">password</label>
-                    <input type="text" class="form-control" name="password" id="password" placeholder="${user.password}" value="${user.password}">
-                </div>
-                <div class="mb-3">
-                    <label for="role" class="form-label">role</label>
-                    <select class="form-select"
-                            aria-label="Default select example"
-                            id="role" name="role">
-
-                                    <option value=user>user</option>
-                                    <option value=admin>admin</option>
-
-                    </select>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="Second group">
+                        <input type="submit" th:value="${add} ? 'Create' : 'Update'" class="btn btn-primary"/>
+                    </div>
                 </div>
             </div>
+            <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></div>
         </div>
-        <button onclick="save()" type="submit" class="btn btn-primary">Save</button>
+        </form>
     </div>
+</div>
 </body>
 </html>

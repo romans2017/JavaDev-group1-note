@@ -1,10 +1,10 @@
-<html xmlns:c="" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Users</title>
-    <thymeleaf th:include="headers::head"/>
+    <thymeleaf th:replace="headers :: head"></thymeleaf>
 </head>
 <body>
-<ul th:include="navigation::nav"></ul>
+<div th:include="navigation::nav"></div>
 <div class="container">
     <div class="row">
         <h2>Users</h2>
@@ -13,33 +13,35 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">id</th>
+                <th scope="col">№</th>
                 <th scope="col">name</th>
-                <th scope="col">role</th>
+                <th scope="col">roles</th>
                 <th scope="col">action</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="user" items="${users}">
-                <tr>
-                    <td><c:out value = "${user.id}"/></td>
-                    <td><c:out value = "${user.lastName}"/></td>
-                    <td><c:out value = "${user.role}"/></td>
+                <tr th:each ="user,i : ${users}">
+                    <td th:text = "${i.index + 1}"></td>
+                    <td th:text = "${user.userName}"></td>
+                    <td id="roles">
+                        <ul th:each="role : ${user.roles}">
+                            <li th:text="${role.name}"></li>
+                        </ul>
+                    </td>
                     <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <div class="btn-group me-2" role="group" aria-label="Second group">
-                                <a href="/user/<c:out value = '${user.id}'/>" type="button" class="btn btn-warning">📝</a>
-                                <a href="/user/delete=<c:out value = '${user.id}'/>" type="button" class="btn btn-danger">🗑</a>
+                                <a th:href="@{/users/{userId}(userId=${user.id})}" type="button" class="btn btn-warning">📝</a>
+                                <a th:href="@{/users/{id}/delete(id=${user.id})}" type="button" class="btn btn-danger">🗑</a>
                             </div>
                         </div>
                     </td>
                 </tr>
-            </c:forEach>
             </tbody>
         </table>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group me-2" role="group" aria-label="Second group">
-                <a href="/users/user" type="button" class="btn btn-primary">+</a>
+                <a th:href="@{/users/add}" type="button" class="btn btn-primary">New</a>
             </div>
         </div>
     </div>

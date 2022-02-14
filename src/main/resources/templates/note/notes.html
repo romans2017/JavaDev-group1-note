@@ -1,29 +1,19 @@
-<html xmlns:th="https://www.thymeleaf.org/">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Notes</title>
     <thymeleaf th:include="headers::head"></thymeleaf>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
     <style>
         .alert {
             display: none;
-        }
-
-        .tippy-box[data-theme~='blue'] {
-            background-color: #0f6dd7;
-            color: #ffffff;
         }
     </style>
 </head>
 <body>
 <div th:include="navigation::nav"></div>
-<div class="alert alert-success" id="success-link" role="alert">
+<div class="container">
+    <div class="alert alert-success" id="success-link" role="alert">
     A link was copy successful!
 </div>
-
-<div class="container">
     <div class="row">
         <h2 th:text="'My notes    ' + ${countNotes} + ' pcs' "></h2>
     </div>
@@ -36,7 +26,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">№</th>
                 <th scope="col">Name</th>
                 <!-- <th scope="col">Description</th>-->
                 <th scope="col">Access type</th>
@@ -47,10 +37,10 @@
             <tr th:each="note,itr: ${notes}">
                 <td th:text="${itr.index + 1}"></td>
                 <td>
-                    <a th:href="'/note/show_note/' + ${note.id}" th:data-tippy-content="${note.description}"
+                    <a th:href="'/note/show_note/' + ${note.id}" th:data-tippy-content="${note.text}"
                        th:text="${note.name}"></a>
                 </td>
-                <td th:text="${note.accssesType}"></td>
+                <td th:text="${note.accessType}"></td>
                 <td>
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group me-2" role="group" aria-label="Second group">
