@@ -6,9 +6,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -93,7 +91,7 @@ public class UserController {
     User user = null;
     model.addAttribute("roles", init());
     try {
-      user = userService.getUser(id);
+      user = userService.findByUserId(id);
     } catch (ResourceNotFoundException ex) {
       model.addAttribute("errorMessage", "User not found");
     }
@@ -128,7 +126,7 @@ public class UserController {
     User user = null;
     model.addAttribute("roles", init());
     try {
-      user = userService.getUser(id);
+      user = userService.findByUserId(id);
     } catch (ResourceNotFoundException ex) {
       model.addAttribute("errorMessage", "User not found");
     }

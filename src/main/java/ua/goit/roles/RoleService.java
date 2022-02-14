@@ -6,20 +6,26 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import ua.goit.base.BaseService;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
 
 @Service
-public class RoleService {
+public class RoleService extends BaseService<Role,UUID> {
 
   private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
   @Autowired
   RoleRepository roleRepository;
+
+  public RoleService(JpaRepository<Role, UUID> repository) {
+    super(repository);
+  }
 
   @Transactional
   boolean existsById(UUID id) {
@@ -37,6 +43,7 @@ public class RoleService {
   }
 
   @Transactional
+  @Override
   public Role save(Role role) throws ResourceAlreadyExistsException, BadResourceException {
     if (!StringUtils.isEmpty(role.getName())) {
       if (role.getId() != null && existsById(role.getId())) {
@@ -66,6 +73,7 @@ public class RoleService {
   }
 
   @Transactional
+  @Override
   public void deleteById(UUID id) throws ResourceNotFoundException {
     if (!existsById(id)) {
       throw new ResourceNotFoundException("Cannot find role with id: " + id);

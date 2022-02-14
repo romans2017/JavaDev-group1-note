@@ -24,10 +24,15 @@ public class Note implements BaseEntity<UUID> {
     private static final long serialVersionUID = 6174182882601741785L;
 
     @Id
-    @GeneratedValue(generator = "uuid2")
+ /*   @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Type(type = "uuid-char")
-    @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    @Type(type = "uuid-char")*/
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(name = "name", length = 100)
@@ -43,6 +48,6 @@ public class Note implements BaseEntity<UUID> {
     private AccessType accessType;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+  //  @JoinColumn(name="user_id")
     private User user;
 }

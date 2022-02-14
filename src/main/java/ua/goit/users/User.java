@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseEntity;
+import ua.goit.notes.Note;
 import ua.goit.roles.Role;
 
 @Data
@@ -47,36 +48,7 @@ public class User implements BaseEntity<UUID> {
   )
   private List<Role> roles;
 
-  @Override
-  public UUID getId() {
-    return id;
-  }
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  private List<Note> notes;
 
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public List<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(List<Role> roles) {
-    this.roles = roles;
-  }
 }

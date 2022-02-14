@@ -1,8 +1,13 @@
 package ua.goit.base;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import ua.goit.exception.BadResourceException;
+import ua.goit.exception.ResourceAlreadyExistsException;
+import ua.goit.users.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +16,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class BaseService <T extends BaseEntity, UUID>{
 
-    private final CrudRepository<T, UUID> repository;
+    private final JpaRepository<T, UUID> repository;
 
-    public T save(T entity) {
+    public T save(T entity) throws BadResourceException, ResourceAlreadyExistsException {
         return repository.save (entity);
     }
 
@@ -25,7 +30,8 @@ public abstract class BaseService <T extends BaseEntity, UUID>{
         return repository.findById(id);
     }
 
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id)  throws ResourceNotFoundException {
         repository.deleteById(id);
     }
+
 }
