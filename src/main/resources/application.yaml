@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: dev
 
 server:
   port: 9999
@@ -22,7 +22,7 @@ spring:
     show-sql: true
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 ---
 spring:
   config:

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
+import ua.goit.users.User;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -40,4 +41,8 @@ public class Note implements BaseEntity<UUID> {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }

@@ -33,8 +33,8 @@
                 <label for="text" class="form-label mt-4">Text</label>
                 <textarea class="form-control" required id="text" rows="20" wrap="hard" maxlength="10000"
                           placeholder="Enter your text"
-                          th:field="*{description} "
-                          th:text="${note.description}"></textarea>
+                          th:field="*{text} "
+                          th:text="${note.text}"></textarea>
             </div>
             <div class="mb-3">
                 <legend class="mt-4">Access type</legend>
@@ -61,7 +61,6 @@
                 <a type="button" class="btn btn-primary" href="/note/list">Cancel</a>
             </div>
         </div>
-
     </form>
 </div>
 <script>
