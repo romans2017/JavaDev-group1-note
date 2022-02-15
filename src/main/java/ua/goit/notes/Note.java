@@ -31,9 +31,9 @@ public class Note implements BaseEntity<UUID> {
     @NotBlank
     private String name;
 
-    @Column(name = "description", length = 10000)
+    @Column(name = "text", length = 10000)
     @NotBlank
-    private String description;
+    private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)

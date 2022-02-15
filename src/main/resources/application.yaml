@@ -43,7 +43,7 @@ spring:
     hibernate:
       ddl-auto: validate
   flyway:
-    locations: classpath:db/migration/postger
+    locations: classpath:db/migration/postgers
 ---
 spring:
   config:
