@@ -10,7 +10,6 @@ import ua.goit.base.BaseService;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service

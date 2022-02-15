@@ -30,13 +30,7 @@ public class Role implements BaseEntity<UUID> {
     @Column(name = "role_name")
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private transient List<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
 }

@@ -1,10 +1,9 @@
 package ua.goit.users;
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.transaction.annotation.Transactional;
 import ua.goit.base.BaseEntity;
 import ua.goit.notes.Note;
 import ua.goit.roles.Role;
@@ -44,7 +43,7 @@ public class User implements BaseEntity<UUID> {
     )
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Note> notes;
 
 }

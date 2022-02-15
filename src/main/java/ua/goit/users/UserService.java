@@ -48,7 +48,7 @@ public class UserService extends BaseService<User, UserDto> {
 
     @Transactional
     public UserDto save(UserDto user) throws BadResourceException, ResourceAlreadyExistsException {
-        if (!StringUtils.isEmpty(user.getUserName())) {
+        if (!user.getUserName().isEmpty()) {
             if (user.getId() != null && existsById(user.getId())) {
                 throw new ResourceAlreadyExistsException("User with id: " + user.getId() + " already exists");
             }

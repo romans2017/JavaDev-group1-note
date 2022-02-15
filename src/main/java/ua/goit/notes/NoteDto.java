@@ -3,7 +3,7 @@ package ua.goit.notes;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.goit.base.BaseDto;
-import ua.goit.users.User;
+import ua.goit.users.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,5 +28,5 @@ public class NoteDto implements BaseDto {
     private AccessType accessType;
 
     @NotNull
-    private User user;
+    private UserDto user;
 }

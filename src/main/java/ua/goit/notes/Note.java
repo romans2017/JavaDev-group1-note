@@ -41,7 +41,7 @@ public class Note implements BaseEntity<UUID> {
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -44,7 +44,7 @@
             <div class="mb-3">
                 <label for="roles" class="form-label">role</label>
                 <select class="form-select" multiple="multiple" id="roles" th:field="*{roles}">
-                    <option th:each="role : ${roles}"
+                    <option th:each="role : ${allRoles}"
                             th:value="${{role.id}}"
                             th:utext="${role.name}"
                             th:selected="${roles == role.id}">
