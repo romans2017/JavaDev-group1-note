@@ -3,18 +3,21 @@ package ua.goit.users;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseEntity;
+import ua.goit.notes.Note;
 import ua.goit.roles.Role;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
 @Table(name = "users")
+@Transactional
 public class User implements BaseEntity<UUID> {
 
   @Id
@@ -36,7 +39,7 @@ public class User implements BaseEntity<UUID> {
   private String password;
 
   @NotNull(message = "User has minimum one role!")
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH},
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH},
       fetch = FetchType.EAGER)
   @JoinTable(
       name = "user_role",
@@ -44,4 +47,8 @@ public class User implements BaseEntity<UUID> {
       inverseJoinColumns = { @JoinColumn(name = "role_id") }
   )
   private List<Role> roles;
+
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  private List<Note> notes;
+
 }

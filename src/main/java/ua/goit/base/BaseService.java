@@ -1,68 +1,37 @@
 package ua.goit.base;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+import ua.goit.exception.BadResourceException;
+import ua.goit.exception.ResourceAlreadyExistsException;
+import ua.goit.users.User;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
-abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto> {
+@Service
+@RequiredArgsConstructor
+public abstract class BaseService <T extends BaseEntity, UUID>{
 
-    private final Class<E> entityClass;
-    private final Class<D> dtoClass;
+    private final JpaRepository<T, UUID> repository;
 
-    @Autowired
-    protected JpaRepository<E, UUID> repository;
-
-    @Autowired
-    protected ModelMapper modelMapper;
-
-    @SuppressWarnings("unchecked")
-    protected BaseService() {
-        Type[] params = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
-        entityClass = (Class<E>) params[0];
-        dtoClass = (Class<D>) params[1];
+    public T save(T entity) throws BadResourceException, ResourceAlreadyExistsException {
+        return repository.save (entity);
     }
 
-    public List<D> findAll() {
-        List<D> dtoList = new ArrayList<>();
-        repository.findAll().forEach(item -> dtoList.add(modelMapper.map(item, dtoClass)));
-        return dtoList;
+    public List<T> findAll() {
+        return (List<T>) repository.findAll();
     }
 
-    public D find(UUID id) {
-        D dto = null;
-        try {
-            dto = dtoClass.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return repository.findById(id).map(entity -> modelMapper.map(entity, dtoClass)).orElse(dto);
+    public Optional<T> findById(UUID id) {
+        return repository.findById(id);
     }
 
-    @Transactional
-    public D create(D dto) {
-        E model = modelMapper.map(dto, entityClass);
-        return modelMapper.map(repository.save(model), dtoClass);
-    }
-
-    @Transactional
-    public void update(UUID id, D dto) {
-        repository.findById(id)
-                .map(user -> {
-                    modelMapper.map(dto, user);
-                    return user;
-                }).ifPresent(user -> repository.save(user));
-    }
-
-    @Transactional
-    public void delete(UUID id) {
+    public void deleteById(UUID id)  throws ResourceNotFoundException {
         repository.deleteById(id);
     }
+
 }
