@@ -53,6 +53,8 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration/postgres
 ---
 spring:
   config:
