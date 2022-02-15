@@ -1,18 +1,8 @@
 package ua.goit.users;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,60 +12,34 @@ import ua.goit.base.BaseService;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
 
+import java.util.UUID;
+
 @Service
-public class UserService extends BaseService<User, UUID> {
+public class UserService extends BaseService<User, UserDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public UserService(JpaRepository<User, UUID> repository) {
-        super(repository);
-    }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
-
 
     boolean existsById(UUID id) {
         return userRepository.existsById(id);
     }
 
-    /*   public List<User> getAllUsers() {
-        LOGGER.info(String.valueOf(userRepository.findAll()));
-        return userRepository.findAll();
-    }*/
-
     @Transactional
-    public User findByUserId(UUID id) {
-        System.out.println("User: " + userRepository.getById(id));
-        return userRepository.getById(id);
-    }
-
-    @Transactional
-    public List<User> findAll(int pageNumber, int rowPerPage) {
-        List<User> users = new ArrayList<>();
-        Pageable sortedByIdAsc = PageRequest.of(pageNumber - 1, rowPerPage,
-                Sort.by("id").ascending());
-        userRepository.findAll(sortedByIdAsc).forEach(users::add);
-        return users;
-    }
-
-    @Transactional
-    @Override
-    public User save(User user) throws BadResourceException, ResourceAlreadyExistsException {
+    public UserDto save(UserDto user) throws BadResourceException, ResourceAlreadyExistsException {
         if (!StringUtils.isEmpty(user.getUserName())) {
             if (user.getId() != null && existsById(user.getId())) {
                 throw new ResourceAlreadyExistsException("User with id: " + user.getId() + " already exists");
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             System.out.print("Save user = " + user);
-            return userRepository.save(user);
+            return modelMapper.map(
+                    userRepository.save(
+                            modelMapper.map(user, User.class)), UserDto.class);
         } else {
             BadResourceException exc = new BadResourceException("Failed to save user");
             exc.addErrorMessage("User is null or empty");
@@ -86,7 +50,7 @@ public class UserService extends BaseService<User, UUID> {
     @Transactional
     public void update(User user) throws BadResourceException, ResourceNotFoundException {
         User userDb = userRepository.getById(user.getId());
-        if (!StringUtils.isEmpty(user.getUserName())) {
+        if (!user.getUserName().isEmpty()) {
             if (!existsById(user.getId())) {
                 throw new ResourceNotFoundException("Cannot find User with id: " + user.getId());
             }
@@ -94,7 +58,9 @@ public class UserService extends BaseService<User, UUID> {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
             user.setPassword(userDb.getPassword());
-            userRepository.save(user);
+            modelMapper.map(
+                    userRepository.save(
+                            modelMapper.map(user, User.class)), UserDto.class);
         } else {
             BadResourceException exc = new BadResourceException("Failed to save user");
             exc.addErrorMessage("User is null or empty");
@@ -103,7 +69,6 @@ public class UserService extends BaseService<User, UUID> {
     }
 
     @Transactional
-    @Override
     public void deleteById(UUID id) throws ResourceNotFoundException {
         if (!existsById(id)) {
             throw new ResourceNotFoundException("Cannot find user with id: " + id);

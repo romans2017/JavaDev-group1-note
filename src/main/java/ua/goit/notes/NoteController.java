@@ -1,6 +1,6 @@
 package ua.goit.notes;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,21 +10,20 @@ import ua.goit.exception.ResourceAlreadyExistsException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import static ua.goit.notes.AccessType.*;
+import static ua.goit.notes.AccessType.PUBLIC;
 
-@RequiredArgsConstructor
 @Controller
 @RequestMapping("/note")
 public class NoteController {
 
-    private final NoteService noteService;
+    @Autowired
+    private NoteService noteService;
 
     @GetMapping("/list")
     public String getAllNotes(Model model) {
-        List<Note> notes = noteService.findAll();
+        List<NoteDto> notes = noteService.findAll();
         model.addAttribute("notes", notes);
         model.addAttribute("countNotes", notes == null ? 0 : notes.size());
         return "note/notes";
@@ -38,49 +37,42 @@ public class NoteController {
     }
 
     @PostMapping("/save_note")
-    public String saveNote(@ModelAttribute("note") @Valid Note note, BindingResult result, Model model) throws BadResourceException, ResourceAlreadyExistsException {
+    public String saveNote(@ModelAttribute("note") @Valid NoteDto note, BindingResult result, Model model) throws BadResourceException, ResourceAlreadyExistsException {
         if (result.hasErrors()) {
             model.addAttribute("note", note);
             model.addAttribute("create", true);
             return "note/create_note";
         }
-        noteService.save(note);
+        noteService.update(note.getId(), note);
         return "redirect:/note/list";
     }
 
     @GetMapping("/edit_note/{id}")
     public String editNote(@PathVariable(value = "id") UUID id, Model model) {
-        noteService.findById(id).ifPresent(note -> {
-            model.addAttribute("note", note);
-        });
+        model.addAttribute("note", noteService.find(id));
         model.addAttribute("create", false);
         return "note/create_note";
     }
 
     @GetMapping("/remove_note/{id}")
     public String removeNote(@PathVariable(value = "id") UUID id) {
-        noteService.deleteById(id);
+        noteService.delete(id);
         return "redirect:/note/list";
     }
 
     @GetMapping("/show_note/{id}")
     public String showNote(@PathVariable(value = "id") UUID id, Model model) {
-        noteService.findById(id).ifPresent(note -> {
-            model.addAttribute("note", note);
-        });
-
+        model.addAttribute("note", noteService.find(id));
         return "note/show_note";
     }
 
     @GetMapping("/share/{id}")
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
-        Optional<Note> note = noteService.findById(id);
-        if (note.isPresent()) {
-            if (note.get().getAccessType().equals(PUBLIC)) {
-                model.addAttribute("note", note.get());
+        NoteDto note = noteService.find(id);
+            if (note.getAccessType().equals(PUBLIC)) {
+                model.addAttribute("note", note);
                 return "note/note_share";
             }
-        }
         return "redirect:/login";
     }
 }
