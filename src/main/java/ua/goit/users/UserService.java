@@ -3,6 +3,9 @@ package ua.goit.users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,8 @@ import ua.goit.base.BaseService;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,6 +32,18 @@ public class UserService extends BaseService<User, UserDto> {
 
     boolean existsById(UUID id) {
         return userRepository.existsById(id);
+    }
+
+    boolean existsByName(String name) {
+        return userRepository.existsByUserNameIgnoreCase(name);
+    }
+
+    public List<UserDto> findAll(int pageNumber, int rowPerPage) {
+        List<UserDto> users = new ArrayList<>();
+        Pageable sortedByIdAsc = PageRequest.of(pageNumber - 1, rowPerPage,
+                Sort.by("id").ascending());
+        userRepository.findAll(sortedByIdAsc).forEach(user -> users.add(modelMapper.map(user, UserDto.class)));
+        return users;
     }
 
     @Transactional

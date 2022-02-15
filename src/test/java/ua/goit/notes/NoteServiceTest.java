@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
+import ua.goit.exception.ResourceAlreadyExistsException;
 
 import java.util.UUID;
 
@@ -20,10 +21,10 @@ class NoteServiceTest {
     private NoteService noteService;
 
     @Test
-    public void insertNote() {
+    public void insertNote() throws ResourceAlreadyExistsException {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
-        noteDto.setDescription("bla bla bla");
+        noteDto.setText("bla bla bla");
 
         NoteDto saved = noteService.create(noteDto);
         NoteDto found = noteService.find(saved.getId());
@@ -32,14 +33,14 @@ class NoteServiceTest {
     }
 
     @Test
-    public void updateNote() {
+    public void updateNote() throws ResourceAlreadyExistsException {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
-        noteDto.setDescription("bla bla bla");
+        noteDto.setText("bla bla bla");
 
         NoteDto created = noteService.create(noteDto);
-        noteDto.setDescription("la la la");
+        noteDto.setText("la la la");
         noteService.update(created.getId(), noteDto);
         NoteDto updated = noteService.find(created.getId());
 
@@ -47,14 +48,14 @@ class NoteServiceTest {
     }
 
     @Test
-    public void getNote() {
+    public void getNote() throws ResourceAlreadyExistsException {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
-        noteDto.setDescription("bla bla bla");
+        noteDto.setText("bla bla bla");
 
         NoteDto created = noteService.create(noteDto);
-        noteDto.setDescription("la la la");
+        noteDto.setText("la la la");
         noteService.update(created.getId(), noteDto);
         NoteDto updated = noteService.find(created.getId());
 
@@ -62,11 +63,11 @@ class NoteServiceTest {
     }
 
     @Test
-    public void deleteNote() {
+    public void deleteNote() throws ResourceAlreadyExistsException {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
-        noteDto.setDescription("bla bla bla");
+        noteDto.setText("bla bla bla");
 
         NoteDto created = noteService.create(noteDto);
         UUID uuid = created.getId();

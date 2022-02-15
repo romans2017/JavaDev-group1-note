@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "notes")
 public class Note implements BaseEntity<UUID> {
@@ -43,6 +42,6 @@ public class Note implements BaseEntity<UUID> {
     private AccessType accessType;
 
     @ManyToOne
-    //  @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

@@ -1,9 +1,5 @@
 package ua.goit.users;
 
-import java.util.List;
-import java.util.UUID;
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +7,15 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
-import ua.goit.roles.Role;
 import ua.goit.roles.RoleDto;
 import ua.goit.roles.RoleService;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 //@PreAuthorize("hasAuthority('admin')")
@@ -43,7 +37,7 @@ public class UserController {
     @GetMapping
     public String getUsers(Model model,
                            @RequestParam(value = "page", defaultValue = "1") int pageNumber) {
-        List<User> users = userService.findAll(pageNumber, ROW_PER_PAGE);
+        List<UserDto> users = userService.findAll(pageNumber, ROW_PER_PAGE);
         Long count = userService.count();
         boolean hasPrev = pageNumber > 1;
         boolean hasNext = ((long) pageNumber * ROW_PER_PAGE) < count;
@@ -58,7 +52,7 @@ public class UserController {
 
     @GetMapping(value = {"/add"})
     public String showAddUser(@Valid Model model) {
-        User user = new User();
+        UserDto user = new UserDto();
         model.addAttribute("add", true);
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.findAll());
@@ -66,16 +60,16 @@ public class UserController {
     }
 
     @PostMapping(value = "/add")
-    public String addUser(Model model, @ModelAttribute("user") @Valid User user,
+    public String addUser(Model model, @ModelAttribute("user") @Valid UserDto user,
                           BindingResult result) throws BadResourceException, ResourceAlreadyExistsException {
-        User userFromDb = userRepository.findByUserName(user.getUserName());
+        boolean isExistByName = userService.existsByName(user.getUserName());
         model.addAttribute("add", true);
         model.addAttribute("roles", init());
-        if (result.hasErrors() || user.getRoles().size() == 0 || userFromDb != null) {
+        if (result.hasErrors() || user.getRoles().size() == 0 || isExistByName) {
             if (user.getRoles().size() == 0) {
                 model.addAttribute("errorRoles", "User has minimum one role!");
                 return "user/user";
-            } else if (userFromDb != null) {
+            } else if (isExistByName) {
                 model.addAttribute("errorUniqueUserName",
                         "This user name is exists! User name must be unique!");
                 return "user/user";
@@ -89,10 +83,10 @@ public class UserController {
 
     @GetMapping(value = {"/{id}"})
     public String showEditUser(Model model, @PathVariable UUID id) {
-        User user = null;
+        UserDto user = null;
         model.addAttribute("roles", init());
         try {
-            user = userService.findByUserId(id);
+            user = userService.find(id);
         } catch (ResourceNotFoundException ex) {
             model.addAttribute("errorMessage", "User not found");
         }
@@ -103,14 +97,13 @@ public class UserController {
 
     @PostMapping(value = {"/{userId}"})
     public String updateUser(Model model, @PathVariable UUID userId,
-                             @ModelAttribute("user") User user, BindingResult result) {
+                             @ModelAttribute("user") UserDto user, BindingResult result) {
         model.addAttribute("roles", init());
         try {
             if (result.hasErrors()) {
                 return "user/user";
             } else {
-                user.setId(userId);
-                userService.update(user);
+                userService.update(userId, user);
                 return "redirect:/users";
             }
         } catch (Exception ex) {
@@ -124,10 +117,10 @@ public class UserController {
 
     @GetMapping(value = {"/{id}/delete"})
     public String showDeleteUserById(Model model, @PathVariable UUID id) {
-        User user = null;
+        UserDto user = null;
         model.addAttribute("roles", init());
         try {
-            user = userService.findByUserId(id);
+            user = userService.find(id);
         } catch (ResourceNotFoundException ex) {
             model.addAttribute("errorMessage", "User not found");
         }
