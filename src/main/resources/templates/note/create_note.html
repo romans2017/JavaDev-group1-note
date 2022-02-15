@@ -2,7 +2,7 @@
 <head>
     <title>Note</title>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-      <thymeleaf th:include="headers::head"></thymeleaf>
+    <thymeleaf th:include="headers::head"></thymeleaf>
 
 </head>
 <body>
@@ -34,22 +34,22 @@
                 <label for="text" class="form-label mt-4">Text</label>
                 <textarea class="form-control" required id="text" rows="20" wrap="hard" maxlength="10000"
                           placeholder="Enter your text"
-                          th:field="*{description} "
-                          th:text="${note.description}"></textarea>
+                          th:field="*{text}"
+                          th:text="${note.text}"></textarea>
             </div>
             <div class="mb-3">
                 <legend class="mt-4">Access type</legend>
 
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="private"
-                           value="PRIVATE" th:field="*{accssesType}">
+                           value="PRIVATE" th:field="*{accessType}">
                     <label class="form-check-label" for="private">
                         private
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="public" value="PUBLIC"
-                           th:field="*{accssesType}">
+                           th:field="*{accessType}">
                     <label class="form-check-label" for="public">
                         public
                     </label>

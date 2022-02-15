@@ -1,6 +1,6 @@
 package ua.goit.notes;
 
-public enum AccssesType {
+public enum AccessType {
     PRIVATE,
     PUBLIC
 }

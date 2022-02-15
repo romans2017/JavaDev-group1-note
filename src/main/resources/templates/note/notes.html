@@ -38,7 +38,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <!-- <th scope="col">Description</th>-->
+                <!-- <th scope="col">Text</th>-->
                 <th scope="col">Access type</th>
                 <th scope="col">Action</th>
             </tr>
@@ -47,10 +47,10 @@
             <tr th:each="note,itr: ${notes}">
                 <td th:text="${itr.index + 1}"></td>
                 <td>
-                    <a th:href="'/note/show_note/' + ${note.id}" th:data-tippy-content="${note.description}"
+                    <a th:href="'/note/show_note/' + ${note.id}" th:data-tippy-content="${note.text}"
                        th:text="${note.name}"></a>
                 </td>
-                <td th:text="${note.accssesType}"></td>
+                <td th:text="${note.accessType}"></td>
                 <td>
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group me-2" role="group" aria-label="Second group">
