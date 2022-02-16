@@ -27,6 +27,6 @@ public class NoteDto implements BaseDto {
     @NotNull
     private AccessType accessType;
 
-    @NotNull
+   // @NotNull
     private UserDto user;
 }

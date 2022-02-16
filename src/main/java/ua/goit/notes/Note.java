@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
+import ua.goit.users.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,8 +24,11 @@ public class Note implements BaseEntity<UUID> {
     private static final long serialVersionUID = 6174182882601741785L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "serial")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "name", length = 100)
@@ -37,5 +41,8 @@ public class Note implements BaseEntity<UUID> {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private AccssesType accssesType;
+    private AccessType accessType;
+
+    @ManyToOne
+    private User user;
 }

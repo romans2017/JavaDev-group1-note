@@ -9,10 +9,10 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 
-    @Bean(name = "mvcHandlerMappingIntrospector")
+  /*  @Bean(name = "mvcHandlerMappingIntrospector")
     public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
         return new HandlerMappingIntrospector();
-    }
+    }*/
 
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");

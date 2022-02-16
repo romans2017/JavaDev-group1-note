@@ -1,14 +1,24 @@
 package ua.goit.notes;
 
+import com.sun.security.auth.UserPrincipal;
+import org.apache.catalina.realm.UserDatabaseRealm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.goit.base.CustomUserDetailsService;
+import ua.goit.base.MyUserDetails;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
+import ua.goit.users.User;
+import ua.goit.users.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +53,7 @@ public class NoteController {
             model.addAttribute("create", true);
             return "note/create_note";
         }
-        noteService.update(note.getId(), note);
+        noteService.create(note);
         return "redirect:/note/list";
     }
 
