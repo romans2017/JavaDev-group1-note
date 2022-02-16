@@ -1,5 +1,6 @@
 package ua.goit.base;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ua.goit.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,7 @@ import ua.goit.users.UserRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -37,7 +39,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return Collections.emptyList();
+            return user.getRoles()
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                    .collect(Collectors.toSet());
         }
 
         @Override

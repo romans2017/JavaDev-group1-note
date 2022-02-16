@@ -8,6 +8,7 @@ import ua.goit.base.BaseEntity;
 import ua.goit.users.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,5 @@ public class Role implements BaseEntity<UUID> {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-
+    private List<User> users = new ArrayList<>();
 }

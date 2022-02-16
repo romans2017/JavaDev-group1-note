@@ -9,8 +9,7 @@ import ua.goit.notes.Note;
 import ua.goit.roles.Role;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -41,9 +40,8 @@ public class User implements BaseEntity<UUID> {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Note> notes;
-
 }
