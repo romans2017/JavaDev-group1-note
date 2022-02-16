@@ -1,8 +1,8 @@
 --======================================================================================================--
 insert into roles(id, role_name)
-values(random_uuid(), 'ROLE_ADMIN');
+values(random_uuid(), 'admin');
 insert into roles(id, role_name)
-values(random_uuid(), 'ROLE_USER');
+values(random_uuid(), 'user');
 --======================================================================================================--
 -- login: admin, pass: super_secret_password
 insert into users(id, user_name, password)
