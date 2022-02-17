@@ -12,6 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,11 +58,10 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
 
     @Transactional
     public void update(UUID id, D dto) {
-        repository.findById(id)
-                .map(user -> {
-                    modelMapper.map(dto, user);
-                    return user;
-                }).ifPresent(user -> repository.save(user));
+        repository.findById(id).ifPresent(user->{
+            E model = modelMapper.map(dto, entityClass);
+            repository.save(model);
+        });
     }
 
     @Transactional

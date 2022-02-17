@@ -24,42 +24,42 @@
         <h2 id="edit_page" th:text="${add} ? 'Create User:' : 'Edit User:'"></h2>
         <form th:action="${add} ? @{/users/add} : @{/users/{userId}(userId=${user.id})}"
               th:object="${user}" method="POST">
-        <div class="row">
-                <br/>
-            <div class="mb-3">
-                <label for="id" class="form-label">ID</label>
-                <input type="hidden" disabled class="form-control" id="id" th:utext="${user.id}">
-            </div>
-            <div class="mb-3">
-                <label for="userName" class="form-label">User name</label>
-                <input type="text" class="form-control" id="userName" th:field="*{userName}" placeholder="User name">
-                <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
-                <div class="alert alert-danger" th:if="${errorUniqueUserName}" th:utext="${errorUniqueUserName}"/>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}">
-                <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
-            </div>
-            <div class="mb-3">
-                <label for="roles" class="form-label">role</label>
-                <select class="form-select" multiple="multiple" id="roles" th:field="*{roles}">
-                    <option th:each="role : ${allRoles}"
-                            th:value="${{role.id}}"
-                            th:utext="${role.name}"
-                            th:selected="${roles == role.id}">
-                </select>
-                <div class="alert alert-danger" th:if="${errorRoles}" th:utext="${errorRoles}"/>
-            </div>
             <div class="row">
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-2" role="group" aria-label="Second group">
-                        <input type="submit" th:value="${add} ? 'Create' : 'Update'" class="btn btn-primary"/>
+                <br/>
+                <div class="mb-3">
+                    <label for="id" class="form-label"></label>
+                    <input type="hidden"  class="form-control" id="id">
+                </div>
+                <div class="mb-3">
+                    <label for="userName" class="form-label">User name</label>
+                    <input type="text" class="form-control" id="userName" th:field="*{userName}" placeholder="User name">
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
+                    <div class="alert alert-danger" th:if="${errorUniqueUserName}" th:utext="${errorUniqueUserName}"/>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}">
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                </div>
+                <div class="mb-3">
+                    <label for="roles" class="form-label">role</label>
+                    <select class="form-select" multiple="multiple" id="roles" th:field="*{roles}">
+                        <option th:each="role : ${allRoles}"
+                                th:value="${{role.id}}"
+                                th:utext="${role.name}"
+                                th:selected="${roles == role.id}">
+                    </select>
+                    <div class="alert alert-danger" th:if="${errorRoles}" th:utext="${errorRoles}"/>
+                </div>
+                <div class="row">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <input type="submit" th:value="${add} ? 'Create' : 'Update'" class="btn btn-primary"/>
+                        </div>
                     </div>
                 </div>
+                <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
             </div>
-            <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
-        </div>
         </form>
     </div>
 </div>

@@ -106,6 +106,7 @@ public class UserController {
                 model.addAttribute("user", user);
                 return "user/user";
             } else {
+                user.setId(userId);
                 userService.update(userId, user);
                 return "redirect:/users";
             }

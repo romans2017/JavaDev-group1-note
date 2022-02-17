@@ -26,6 +26,7 @@ public class UserDto implements BaseDto {
     @Length(min = 5, message = "Password should be at least 5 character.")
     private String password;
 
-    @NotNull(message = "User has minimum one role!")
+   // @NotNull(message = "User has minimum one role!")
     private List<RoleDto> roles = new ArrayList<>();
+
 }
