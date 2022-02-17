@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping(value = {"/add"})
-    public String showAddUser(@Valid Model model) {
+    public String showAddUser(Model model) {
         UserDto user = new UserDto();
         model.addAttribute("add", true);
         model.addAttribute("user", user);
@@ -62,18 +62,9 @@ public class UserController {
     @PostMapping(value = "/add")
     public String addUser(Model model, @ModelAttribute("user") @Valid UserDto user,
                           BindingResult result) throws BadResourceException, ResourceAlreadyExistsException {
-        boolean isExistByName = userService.existsByName(user.getUserName());
-        model.addAttribute("add", true);
-        model.addAttribute("allRoles", init());
-        if (result.hasErrors() || user.getRoles().size() == 0 || isExistByName) {
-            if (user.getRoles().size() == 0) {
-                model.addAttribute("errorRoles", "User has minimum one role!");
-                return "user/user";
-            } else if (isExistByName) {
-                model.addAttribute("errorUniqueUserName",
-                        "This user name is exists! User name must be unique!");
-                return "user/user";
-            }
+        if (result.hasErrors()) {
+            model.addAttribute("add", true);
+            model.addAttribute("allRoles", init());
             return "user/user";
         } else {
             userService.save(user);
@@ -97,12 +88,12 @@ public class UserController {
 
     @PostMapping(value = {"/{userId}"})
     public String updateUser(Model model, @PathVariable UUID userId,
-                             @ModelAttribute("user") UserDto user, BindingResult result) {
+                             @ModelAttribute("user") @Valid UserDto user, BindingResult result) {
         model.addAttribute("allRoles", init());
+        user.setId(userId);
         try {
             if (result.hasErrors()) {
                 model.addAttribute("add", false);
-                user.setId(userId);
                 model.addAttribute("user", user);
                 return "user/user";
             } else {

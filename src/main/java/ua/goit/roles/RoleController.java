@@ -46,16 +46,11 @@ public class RoleController {
     @PostMapping(value = "/add")
     public String addRole(Model model, @ModelAttribute("role") @Valid RoleDto role,
                           BindingResult result) throws BadResourceException, ResourceAlreadyExistsException {
-        boolean isExistByName = service.existsByName(role.getName());
         model.addAttribute("add", true);
-        if (result.hasErrors() || isExistByName) {
-            if (isExistByName) {
-                model.addAttribute("errorUniqueRole", "This role is exists! Role must be unique!");
-                return "role/role";
-            }
+        if (result.hasErrors()) {
             return "role/role";
         } else {
-            service.save(role);
+            service.update(role);
             return "redirect:/roles";
         }
     }
