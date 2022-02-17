@@ -1,6 +1,7 @@
 package ua.goit.users;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class RegistrationController {
                                    BindingResult result,
                                    Model model) {
 
-        User userFromDb = userRepository.findByName(user.getName());
+        User userFromDb = userRepository.findByUserName(user.getUserName());
         if (result.hasErrors() || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
             result
