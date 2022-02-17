@@ -1,10 +1,12 @@
 package ua.goit.users;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 @Repository
-public interface UserRepository extends CrudRepository<User, UUID>{
-  User findByName(String name);
+public interface UserRepository extends JpaRepository<User, UUID> {
+    User findByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 }

@@ -1,10 +1,13 @@
 package ua.goit.roles;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 @Repository
-public interface RoleRepository  extends CrudRepository<Role, UUID> {
-  Role findByName(String name);
+public interface RoleRepository extends JpaRepository<Role, UUID>{
+
+    Role findByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 }

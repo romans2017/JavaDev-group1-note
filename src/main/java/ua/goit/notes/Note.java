@@ -1,9 +1,6 @@
 package ua.goit.notes;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
@@ -11,12 +8,12 @@ import ua.goit.users.User;
 
 import javax.persistence.*;
 import java.util.UUID;
-import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "notes")
 public class Note implements BaseEntity<UUID> {
@@ -31,11 +28,9 @@ public class Note implements BaseEntity<UUID> {
     private UUID id;
 
     @Column(name = "name", length = 100)
-    @NotBlank
     private String name;
 
     @Column(name = "text", length = 10000)
-    @NotBlank
     private String text;
 
     @Column(name = "type")
@@ -43,6 +38,6 @@ public class Note implements BaseEntity<UUID> {
     private AccessType accessType;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }
