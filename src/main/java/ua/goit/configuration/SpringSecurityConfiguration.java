@@ -26,13 +26,13 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers( "/registration")
+                .antMatchers("/registration", "/")
                 .permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/main").permitAll()
+                .defaultSuccessUrl("/note/list").permitAll()
             .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()

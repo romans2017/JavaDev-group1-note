@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: dev
 
 server:
   port: 9999
@@ -23,7 +23,7 @@ spring:
     generate-ddl: false
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
   flyway:
     locations: classpath:db/migration/h2
 
@@ -60,3 +60,5 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration/mysql

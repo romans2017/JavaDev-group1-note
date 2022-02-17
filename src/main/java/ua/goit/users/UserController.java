@@ -32,7 +32,7 @@ public class UserController {
         return "user/users";
     }
 
-    @GetMapping(value = {"add"})
+    @GetMapping("add")
     public String showAddUser(@Valid Model model) {
         UserDto user = new UserDto();
         model.addAttribute("add", true);
@@ -88,6 +88,7 @@ public class UserController {
                 model.addAttribute("user", user);
                 return "user/user";
             } else {
+                user.setId(userId);
                 userService.update(userId, user);
                 return "redirect:/users";
             }

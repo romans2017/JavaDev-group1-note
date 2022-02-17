@@ -14,9 +14,9 @@
               th:object="${user}" method="POST">
         <div class="row">
                 <br/>
+
             <div class="mb-3">
-                <label for="id" class="form-label">ID</label>
-                <input type="hidden" disabled class="form-control" id="id" th:utext="${user.id}">
+                <input hidden type="text" class="form-control" id="id" value="{id}">
             </div>
             <div class="mb-3">
                 <label for="userName" class="form-label">User name</label>
