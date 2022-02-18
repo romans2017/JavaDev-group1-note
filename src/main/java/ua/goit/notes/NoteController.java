@@ -1,6 +1,8 @@
 package ua.goit.notes;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +13,7 @@ import ua.goit.exception.ResourceAlreadyExistsException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static ua.goit.notes.AccessType.PUBLIC;
 
@@ -19,11 +22,23 @@ import static ua.goit.notes.AccessType.PUBLIC;
 @RequestMapping("note")
 public class NoteController {
 
+    @Autowired
     private final NoteService noteService;
 
+    private List<NoteDto> getNotes() {
+        return noteService.findAll();
+    }
+
+    private List<NoteDto> getUserNotes(Authentication authentication) {
+        return getNotes().stream()
+                .filter(userNotes -> authentication.getName()
+                        .equals(userNotes.getUser().getName()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("list")
-    public String getAllNotes(Model model) {
-        List<NoteDto> notes = noteService.findAll();
+    public String getAllNotes(Model model, Authentication authentication) {
+        List<NoteDto> notes = getUserNotes(authentication);
         model.addAttribute("notes", notes);
         model.addAttribute("countNotes", notes == null ? 0 : notes.size());
         return "note/notes";

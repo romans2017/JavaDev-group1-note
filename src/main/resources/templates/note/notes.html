@@ -1,4 +1,6 @@
-<html xmlns:th="https://www.thymeleaf.org/">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Notes</title>
     <thymeleaf th:include="headers::head"></thymeleaf>
@@ -53,7 +55,7 @@
                                    class="btn btn-danger remove_note" data-toggle="modal"
                                    data-target="#remove_modal" id="remove-tooltip">🗑️</a>
                             </div>
-                            <div>
+                            <div th:id="'note_' + ${note.accessType}">
                                 <a type="button" class="btn btn-primary copy-link"
                                    th:data-link="'/note/share/'+ ${note.id}" id="copy-tooltip">🔗</a>
                             </div>
@@ -80,7 +82,7 @@
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-secondary" data-dismiss="modal">No</a>
-                <a type="button" id="remove" class="btn btn-danger ">Yes</a>
+                <a type="button" id="remove" class="btn btn-danger">Yes</a>
             </div>
         </div>
     </div>
@@ -89,6 +91,7 @@
 <script src="https://unpkg.com/tippy.js@6"></script>
 <script>
     $(document).ready(function () {
+        $('div#note_PRIVATE').attr("hidden", true);
         $(".remove_note").click(function () {
             const name_note = $(this).attr("data-content");
             const id_note = $(this).attr("data-id");

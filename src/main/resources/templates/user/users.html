@@ -30,7 +30,8 @@
                 </td>
                 <td>
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                        <div th:id="'user_name_' + ${user.getUserName().equals('admin')}"
+                                class="btn-group me-2" role="group" aria-label="Second group">
                             <a th:href="@{/users/{userId}(userId=${user.id})}" type="button"
                                class="btn btn-warning" id="edit-tooltip">📝</a>
                             <a th:data-id="${user.id}" th:data-content="${user.userName}" type="button"
@@ -73,6 +74,7 @@
 <script src="https://unpkg.com/tippy.js@6"></script>
 <script>
     $(document).ready(function () {
+        $('div#user_name_true').attr("hidden", true);
         $(".remove_user").click(function () {
             const name_user = $(this).attr("data-content");
             const id_user = $(this).attr("data-id");

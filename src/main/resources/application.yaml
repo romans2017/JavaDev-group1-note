@@ -27,15 +27,6 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/h2
-
-myconfig:
-  welcome:
-    message: Hello,
-    img: hello.img
-
-msg:
-  title: Spring Boot Title
-
 ---
 spring:
   config:
@@ -67,3 +58,22 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: mypostgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: false
+    open-in-view: false
+#    hibernate:
+#      ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration/postgres
