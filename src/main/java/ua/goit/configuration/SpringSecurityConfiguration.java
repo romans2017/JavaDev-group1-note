@@ -72,20 +72,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors()
             .and()
                 .csrf().disable();
-    /*    http.authorizeRequests()
-                .antMatchers("/","/registration","/process_register","/webjars/**","/h2/**","/note/share/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().ignoringAntMatchers("/h2/**")
-                .and()
-                .headers().frameOptions().sameOrigin()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/main")
-                .permitAll()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();*/
     }
 
     @Override
