@@ -25,37 +25,28 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
-                .antMatchers( "/registration")
+                .authorizeRequests()
+                .antMatchers("/registration", "/","/note/share/**")
                 .permitAll()
                 .anyRequest().authenticated()
-            .and()
+                .and()
                 .formLogin()
                 .loginPage("/login")
-                .permitAll()
-            .and()
+                .defaultSuccessUrl("/note/list").permitAll()
+                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-            .and()
+                .and()
                 .httpBasic()
-            .and()
+                .and()
                 .cors()
-            .and()
+                .and()
                 .csrf().disable()
         ;
     }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/js/**");
+        web.ignoring().antMatchers("/css/**", "/js/**","/note/share/**");
     }
-
-//    @SneakyThrows
-//    @Override
-//    protected void configure(HttpSecurity http){
-//        http.csrf().disable()
-//            .authorizeRequests()
-////            .antMatchers("/h2/**").permitAll()
-//            .anyRequest().permitAll();
-//    }
 }
