@@ -1,82 +1,53 @@
 package ua.goit.users;
 
-import java.util.List;
-import java.util.UUID;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.transaction.annotation.Transactional;
-import javax.validation.constraints.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseEntity;
+import ua.goit.notes.Note;
 import ua.goit.roles.Role;
 
-@Data
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.*;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "users")
-@Transactional
 public class User implements BaseEntity<UUID> {
 
+  private static final long serialVersionUID = 5686706842794258419L;
+
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(
-      name = "UUID",
-      strategy = "org.hibernate.id.UUIDGenerator"
-  )
-  @Column(name = "id", columnDefinition = "BINARY(16)")
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Type(type = "uuid-char")
+  @Column(name = "id", columnDefinition = "VARCHAR(36)")
   private UUID id;
 
-  @Size(min = 5, message = "User name should be at least 5 character.")
-  @Column(name = "user_name")
-  private String userName;
-
+  @Length(min = 5, message = "First name should be at least 5 character.")
+  @Column(name = "name")
+  private String name;
 
   @Length(min = 5, message = "Password should be at least 5 character.")
   @Column(name = "password")
   private String password;
 
-  @NotNull(message = "User has minimum one role!")
+  @Size(min = 1, message = "User has minimum one role!")
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH},
-      fetch = FetchType.EAGER)
+          fetch = FetchType.EAGER)
   @JoinTable(
-      name = "user_role",
-      joinColumns = { @JoinColumn(name = "user_id") },
-      inverseJoinColumns = { @JoinColumn(name = "role_id") }
+          name = "user_role",
+          joinColumns = {@JoinColumn(name = "user_id")},
+          inverseJoinColumns = {@JoinColumn(name = "role_id")}
   )
-  private List<Role> roles;
+  private List<Role> roles = new ArrayList<>();
 
-  @Override
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public List<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(List<Role> roles) {
-    this.roles = roles;
-  }
+  @OneToMany(mappedBy = "user")
+  private List<Note> notes;
 }

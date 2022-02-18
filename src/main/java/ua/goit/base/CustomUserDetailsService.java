@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findUserByName(username);
         if (user == null) {
             throw new UsernameNotFoundException("User with that combination username and password was not found");
         }
@@ -52,7 +52,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         @Override
         public String getUsername() {
-            return this.user.getUserName();
+            return this.user.getName();
         }
 
         @Override

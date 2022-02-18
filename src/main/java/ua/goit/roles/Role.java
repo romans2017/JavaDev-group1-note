@@ -1,79 +1,37 @@
 package ua.goit.roles;
 
-import java.util.List;
-import java.util.UUID;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
 import ua.goit.users.User;
 
-@Data
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "roles")
-@Transactional
 public class Role implements BaseEntity<UUID> {
 
+  private static final long serialVersionUID = 291330219299121609L;
+
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(
-      name = "UUID",
-      strategy = "org.hibernate.id.UUIDGenerator"
-  )
-  @Column(name = "id", updatable = false, nullable = false)
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Type(type = "uuid-char")
+  @Column(name = "id", columnDefinition = "VARCHAR(36)", updatable = false, nullable = false)
   private UUID id;
 
-  @Size(min = 3, message = "Role should be at least 3 character.")
   @Column(name = "role_name")
   private String name;
 
-  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH},
-      fetch = FetchType.EAGER)
-  @JoinTable(
-      name = "user_role",
-      joinColumns = { @JoinColumn(name = "role_id") },
-      inverseJoinColumns = { @JoinColumn(name = "user_id") }
-  )
-  private transient List<User> users;
-
-  @Override
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public List<User> getUsers() {
-    return users;
-  }
-
-  public void setUsers(List<User> users) {
-    this.users = users;
-  }
+  @ManyToMany(mappedBy = "roles")
+  private List<User> users = new ArrayList<>();
 }

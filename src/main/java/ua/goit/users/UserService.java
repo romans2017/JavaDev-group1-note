@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import ua.goit.base.BaseService;
 import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
-import ua.goit.roles.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class UserService extends BaseService<User, UserDto> {
   }
 
   boolean existsByName(String name) {
-    return userRepository.existsByUserNameIgnoreCase(name);
+    return userRepository.existsByNameIgnoreCase(name);
   }
 
   public List<UserDto> findAll() {
@@ -62,7 +61,7 @@ public class UserService extends BaseService<User, UserDto> {
   @Transactional
   public void update(User user) throws BadResourceException, ResourceNotFoundException {
     User userDb = userRepository.getById(user.getId());
-    if (!user.getUserName().isEmpty()) {
+    if (!user.getName().isEmpty()) {
       if (!existsById(user.getId())) {
         throw new ResourceNotFoundException("Cannot find User with id: " + user.getId());
       }

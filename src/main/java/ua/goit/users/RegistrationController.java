@@ -50,7 +50,7 @@ public class RegistrationController {
                                    BindingResult result,
                                    Model model) {
 
-        User userFromDb = userRepository.findByUserName(user.getUserName());
+        User userFromDb = userRepository.findUserByName(user.getName());
         if (result.hasErrors() || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
             result
