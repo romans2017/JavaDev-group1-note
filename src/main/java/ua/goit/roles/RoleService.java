@@ -47,7 +47,7 @@ public class RoleService extends BaseService<Role, RoleDto> {
 
     @Transactional
     public RoleDto create(RoleDto role) throws ResourceAlreadyExistsException {
-        Role roleDb = roleRepository.findRoleByName(role.getName());
+        Role roleDb = roleRepository.findByName(role.getName());
         if (roleDb.getId() != null) {
             throw new ResourceAlreadyExistsException("Role with id: " + role.getId() + " already exists");
         }

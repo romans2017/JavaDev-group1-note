@@ -1,6 +1,5 @@
 package ua.goit.base;
 
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ua.goit.users.User;
@@ -28,7 +27,7 @@ public  class MyUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.user.getUserName();
+        return this.user.getName();
     }
 
     @Override

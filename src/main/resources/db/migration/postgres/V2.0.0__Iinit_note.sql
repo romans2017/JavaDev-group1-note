@@ -1,5 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TABLE notes (id UUID DEFAULT RANDOM_UUID() NOT NULL,
+CREATE TABLE notes (id varchar(50) NOT NULL,
 name varchar(100),
 text varchar(10000),
  type varchar(30),

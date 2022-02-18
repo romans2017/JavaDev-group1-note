@@ -3,9 +3,7 @@ package ua.goit.users;
 import java.util.List;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ua.goit.roles.Role;
 import ua.goit.roles.RoleRepository;
 
+@RequiredArgsConstructor
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("registration")
 public class RegistrationController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private List<Role> initRoles() {
         return roleRepository.findAll();
@@ -46,7 +40,7 @@ public class RegistrationController {
                                    BindingResult result,
                                    Model model) {
 
-        User userFromDb = userRepository.findByUserName(user.getUserName());
+        User userFromDb = userRepository.findByName(user.getName());
         model.addAttribute("getRoles", initRoles());
         if (result.hasErrors() || user.getRoles() == null || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());

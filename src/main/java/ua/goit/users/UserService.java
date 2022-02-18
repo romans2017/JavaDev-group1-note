@@ -35,7 +35,7 @@ public class UserService extends BaseService<User, UserDto> {
     }
 
     boolean existsByName(String name) {
-        return userRepository.existsByUserNameIgnoreCase(name);
+        return userRepository.existsByNameIgnoreCase(name);
     }
 
     public List<UserDto> findAll(int pageNumber, int rowPerPage) {
@@ -67,7 +67,7 @@ public class UserService extends BaseService<User, UserDto> {
     @Transactional
     public void update(User user) throws BadResourceException, ResourceNotFoundException {
         User userDb = userRepository.getById(user.getId());
-        if (!user.getUserName().isEmpty()) {
+        if (!user.getName().isEmpty()) {
             if (!existsById(user.getId())) {
                 throw new ResourceNotFoundException("Cannot find User with id: " + user.getId());
             }

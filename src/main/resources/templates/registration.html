@@ -16,9 +16,9 @@
             <h4>Create an account</h4>
             <form action="/registration" method="POST">
                 <div class="mb-3">
-                    <label class="form-label" for="userName">User name</label>
-                    <input type="text" name="userName" id="userName" class="form-control form-control-lg" />
-                    <div th:if="${userName}" th:utext="${userName}" class="alert alert-danger">[error]</div>
+                    <label class="form-label" for="name">User name</label>
+                    <input type="text" name="name" id="name" class="form-control form-control-lg" />
+                    <div th:if="${name}" th:utext="${name}" class="alert alert-danger">[error]</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password">Password</label>
