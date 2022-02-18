@@ -31,8 +31,8 @@
                        th:field="*{name}">
             </div>
             <div class="form-group">
-                <label for="text" class="form-label mt-4">Text</label>
-                <textarea class="form-control" required id="text" rows="8" wrap="hard"  minlength="5" maxlength="10000"
+                <label for="markdown" class="form-label mt-4">Text</label>
+                <textarea class="form-control" required id="markdown"  name="markdown" rows="8" wrap="hard"  minlength="5" maxlength="10000"
                           placeholder="Enter your text"
                           th:field="*{text}"
                           th:text="${note.text}"></textarea>

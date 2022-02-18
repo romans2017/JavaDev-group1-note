@@ -1,6 +1,8 @@
 package ua.goit.notes;
 
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,15 +23,20 @@ import static ua.goit.notes.AccessType.PUBLIC;
 @Controller
 @RequestMapping("note")
 public class NoteController {
-
+     @Autowired
     private final NoteService noteService;
+     @Autowired
+     private final HtmlService htmlService;
 
     @GetMapping("list")
     public String getAllNotes(Model model) {
         List<NoteDto> notes = noteService.findAll();
+        notes.forEach(note->{
+            String text = htmlService.markdownToText(note.getText());
+            note.setText(text);
+        });
         model.addAttribute("notes", notes);
         model.addAttribute("countNotes", notes == null ? 0 : notes.size());
-        model.addAttribute("isPrivate",true);
         return "note/notes";
     }
 
@@ -55,6 +62,7 @@ public class NoteController {
     public String editNote(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("note", noteService.find(id));
         model.addAttribute("create", false);
+
         return "note/create_note";
     }
 
@@ -66,7 +74,10 @@ public class NoteController {
 
     @GetMapping("show_note/{id}")
     public String showNote(@PathVariable(value = "id") UUID id, Model model) {
-        model.addAttribute("note", noteService.find(id));
+        NoteDto note = noteService.find(id);
+        model.addAttribute("note",note);
+        String htmlContent = htmlService.markdownToHtml(note.getText());
+        model.addAttribute("htmlContent",htmlContent);
         return "note/show_note";
     }
 
@@ -77,6 +88,8 @@ public class NoteController {
                 String userName = SecurityContextHolder.getContext().getAuthentication().getName();
                 model.addAttribute("note", note);
                 model.addAttribute("userName",userName);
+                String htmlContent = htmlService.markdownToHtml(note.getText());
+                model.addAttribute("htmlContent",htmlContent);
                 return "note/note_share";
             }
         return "redirect:/login";

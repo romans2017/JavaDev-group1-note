@@ -1,11 +1,16 @@
 package ua.goit.notes;
 
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseService;
 import ua.goit.users.User;
 import ua.goit.users.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -13,7 +18,8 @@ public class NoteService extends BaseService<Note, NoteDto> {
 
     private final NoteRepository noteRepository;
     private final UserRepository userRepository;
-
+    @Autowired
+    private final HtmlService htmlService;
 
     @Override
     public NoteDto create(NoteDto dto){
@@ -23,5 +29,17 @@ public class NoteService extends BaseService<Note, NoteDto> {
         note.setUser(user);
         noteRepository.save(note);
         return super.modelMapper.map(note,NoteDto.class);
+    }
+
+    @Override
+    public List<NoteDto> findAll() {
+        List<NoteDto> dtoList = new ArrayList<>();
+        repository.findAll().forEach(item -> dtoList.add(modelMapper.map(item, NoteDto.class)));
+        dtoList.forEach(note->{
+            String htmlContent = htmlService.markdownToHtml(note.getText());
+            String text = Jsoup.parse(htmlContent).wholeText();
+            note.setText(text);
+        });
+        return dtoList;
     }
 }
