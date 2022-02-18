@@ -1,19 +1,12 @@
-<html xmlns:th="https://www.thymeleaf.org/">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Notes</title>
     <thymeleaf th:include="headers::head"></thymeleaf>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
     <style>
         .alert {
             display: none;
-        }
-
-        .tippy-box[data-theme~='blue'] {
-            background-color: #0f6dd7;
-            color: #ffffff;
         }
     </style>
 </head>
@@ -25,7 +18,7 @@
 
 <div class="container">
     <div class="row">
-        <h2 th:text="'My notes    ' + ${countNotes} + ' pcs' "></h2>
+        <h2 th:text="'My notes: ' + ${countNotes} + ' pcs' "></h2>
     </div>
     <div class="row">
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -36,11 +29,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <!-- <th scope="col">Text</th>-->
-                <th scope="col">Access type</th>
-                <th scope="col">Action</th>
+                <th scope="col">№</th>
+                <th scope="col">name</th>
+                <th scope="col">access type</th>
+                <th scope="col">action</th>
             </tr>
             </thead>
             <tbody>
@@ -63,7 +55,7 @@
                                    class="btn btn-danger remove_note" data-toggle="modal"
                                    data-target="#remove_modal" id="remove-tooltip">🗑️</a>
                             </div>
-                            <div>
+                            <div th:id="'note_' + ${note.accessType}">
                                 <a type="button" class="btn btn-primary copy-link"
                                    th:data-link="'/note/share/'+ ${note.id}" id="copy-tooltip">🔗</a>
                             </div>
@@ -90,7 +82,7 @@
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-secondary" data-dismiss="modal">No</a>
-                <a type="button" id="remove" class="btn btn-danger ">Yes</a>
+                <a type="button" id="remove" class="btn btn-danger">Yes</a>
             </div>
         </div>
     </div>
@@ -99,6 +91,7 @@
 <script src="https://unpkg.com/tippy.js@6"></script>
 <script>
     $(document).ready(function () {
+        $('div#note_PRIVATE').attr("hidden", true);
         $(".remove_note").click(function () {
             const name_note = $(this).attr("data-content");
             const id_note = $(this).attr("data-id");

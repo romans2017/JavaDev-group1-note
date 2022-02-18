@@ -1,10 +1,10 @@
 package ua.goit.users;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,27 +17,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ua.goit.roles.Role;
 import ua.goit.roles.RoleRepository;
 
+@RequiredArgsConstructor
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("registration")
 public class RegistrationController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private List<Role> initRoles() {
         return roleRepository.findAll();
     }
 
+    private List<Role> getRoleByDefault() {
+        return initRoles().stream()
+                .filter(roleDefault -> roleDefault.getName().equals("user"))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping
     public String registration(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("getRoles", initRoles());
         return "registration";
     }
 
@@ -46,26 +50,19 @@ public class RegistrationController {
                                    BindingResult result,
                                    Model model) {
 
-        User userFromDb = userRepository.findByUserName(user.getUserName());
-        model.addAttribute("getRoles", initRoles());
-        if (result.hasErrors() || user.getRoles() == null || userFromDb != null) {
+        User userFromDb = userRepository.findUserByName(user.getName());
+        if (result.hasErrors() || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
             result
                     .getFieldErrors()
                     .forEach(f -> model.addAttribute(f.getField(), f.getDefaultMessage()));
-
-            result
-                    .getFieldErrors()
-                    .forEach(f -> System.out.println(f.getField() + ": " + f.getDefaultMessage()));
-            if (user.getRoles() == null) {
-                model.addAttribute("errorRoles", "User has minimum one role!");
-                return "registration";
-            } else if (userFromDb != null) {
+            if (userFromDb != null) {
                 model.addAttribute("errorUniqueUserName", "This user name is exists! User name must be unique!");
                 return "registration";
             }
             return "registration";
         }
+        user.setRoles(getRoleByDefault());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/login";

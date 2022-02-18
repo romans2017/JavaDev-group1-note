@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
 import ua.goit.users.User;
 
@@ -19,18 +20,18 @@ import java.util.UUID;
 @Table(name = "roles")
 public class Role implements BaseEntity<UUID> {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+  private static final long serialVersionUID = 291330219299121609L;
 
-    @Column(name = "role_name")
-    private String name;
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Type(type = "uuid-char")
+  @Column(name = "id", columnDefinition = "VARCHAR(36)", updatable = false, nullable = false)
+  private UUID id;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+  @Column(name = "role_name")
+  private String name;
+
+  @ManyToMany(mappedBy = "roles")
+  private List<User> users = new ArrayList<>();
 }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
 
-    User findByUserName(String userName);
+    User findUserByName(String userName);
 
-    boolean existsByUserNameIgnoreCase(String userName);
+    boolean existsByNameIgnoreCase(String userName);
 
 }
