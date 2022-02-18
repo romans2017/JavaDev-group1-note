@@ -30,16 +30,4 @@ public class NoteService extends BaseService<Note, NoteDto> {
         noteRepository.save(note);
         return super.modelMapper.map(note,NoteDto.class);
     }
-
-    @Override
-    public List<NoteDto> findAll() {
-        List<NoteDto> dtoList = new ArrayList<>();
-        repository.findAll().forEach(item -> dtoList.add(modelMapper.map(item, NoteDto.class)));
-        dtoList.forEach(note->{
-            String htmlContent = htmlService.markdownToHtml(note.getText());
-            String text = Jsoup.parse(htmlContent).wholeText();
-            note.setText(text);
-        });
-        return dtoList;
-    }
 }
