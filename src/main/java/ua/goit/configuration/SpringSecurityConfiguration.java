@@ -50,12 +50,16 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    /*    http
+        http
             .authorizeRequests()
-                .antMatchers( "/registration")
+                .antMatchers( "/registration","/note/share/**")
                 .permitAll()
                 .anyRequest().authenticated()
             .and()
+             .csrf().ignoringAntMatchers("/h2/**")
+                .and()
+                .headers().frameOptions().sameOrigin()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/main").permitAll()
@@ -67,9 +71,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .cors()
             .and()
-                .csrf().disable();*/
-        http.authorizeRequests()
-                .antMatchers("/","/registration","/process_register","/webjars/**","/h2/**").permitAll()
+                .csrf().disable();
+    /*    http.authorizeRequests()
+                .antMatchers("/","/registration","/process_register","/webjars/**","/h2/**","/note/share/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().ignoringAntMatchers("/h2/**")
@@ -81,7 +85,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/main")
                 .permitAll()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();*/
     }
 
     @Override
@@ -89,12 +93,4 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/css/**", "/js/**");
     }
 
-//    @SneakyThrows
-//    @Override
-//    protected void configure(HttpSecurity http){
-//        http.csrf().disable()
-//            .authorizeRequests()
-////            .antMatchers("/h2/**").permitAll()
-//            .anyRequest().permitAll();
-//    }
 }
