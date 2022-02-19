@@ -2,19 +2,17 @@ package ua.goit.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -25,28 +23,25 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/registration", "/","/note/share/**")
+            .authorizeRequests()
+                .antMatchers("/registration", "/","/note/share/*")
                 .permitAll()
                 .anyRequest().authenticated()
-                .and()
+            .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/note/list").permitAll()
-                .and()
+                .defaultSuccessUrl("/note/list")
+                .permitAll()
+            .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-                .and()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .permitAll()
+            .and()
                 .httpBasic()
-                .and()
+            .and()
                 .cors()
-                .and()
+            .and()
                 .csrf().disable()
         ;
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/js/**","/note/share/**");
     }
 }
