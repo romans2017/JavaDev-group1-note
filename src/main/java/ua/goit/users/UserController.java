@@ -8,8 +8,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.goit.roles.RoleService;
+import ua.goit.validation.OnCreate;
+import ua.goit.validation.OnUpdate;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,14 +44,14 @@ public class UserController {
     }
 
     @PostMapping(value = "add")
-    public String addUser(Model model, @ModelAttribute("user") @Validated UserDto user,
+    public String addUser(Model model, @ModelAttribute("user") @Validated({OnCreate.class}) UserDto user,
                           BindingResult result) {
         if (result.hasErrors()) {
             model.addAttribute("add", true);
             model.addAttribute("allRoles", roleService.findAll());
             return "user/user";
         }
-        userService.update(user.getId(), user);
+        userService.create(user);
         return "redirect:/users";
     }
 
@@ -64,10 +65,11 @@ public class UserController {
 
     @PostMapping(value = {"{userId}"})
     public String updateUser(Model model, @PathVariable UUID userId,
-                             @ModelAttribute("user") @Validated UserDto user, BindingResult result) {
+                             @ModelAttribute("user") @Validated({OnUpdate.class}) UserDto user, BindingResult result) {
         if (result.hasErrors()) {
             model.addAttribute("add", false);
             model.addAttribute("allRoles", roleService.findAll());
+            model.addAttribute("user", user);
             return "user/user";
         }
         userService.update(userId, user);

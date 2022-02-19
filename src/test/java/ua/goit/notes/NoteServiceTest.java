@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
-import ua.goit.exception.ResourceAlreadyExistsException;
 
 import java.util.UUID;
 
@@ -21,7 +20,7 @@ class NoteServiceTest {
     private NoteService noteService;
 
     @Test
-    public void insertNote() throws ResourceAlreadyExistsException {
+    public void insertNote() {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
         noteDto.setText("bla bla bla");
@@ -33,7 +32,7 @@ class NoteServiceTest {
     }
 
     @Test
-    public void updateNote() throws ResourceAlreadyExistsException {
+    public void updateNote() {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
@@ -48,7 +47,7 @@ class NoteServiceTest {
     }
 
     @Test
-    public void getNote() throws ResourceAlreadyExistsException {
+    public void getNote() {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");
@@ -63,7 +62,7 @@ class NoteServiceTest {
     }
 
     @Test
-    public void deleteNote() throws ResourceAlreadyExistsException {
+    public void deleteNote() {
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("test note");

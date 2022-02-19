@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ua.goit.users.UserService;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @Controller
@@ -18,6 +18,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -39,9 +42,10 @@ public class RoleController {
         if (result.hasErrors()) {
             model.addAttribute("add", true);
             model.addAttribute("allRoles", roleService.findAll());
+            model.addAttribute("role", role);
             return "role/role";
         }
-        roleService.update(role.getId(), role);
+        roleService.create(role);
         return "redirect:/roles";
     }
 
@@ -65,7 +69,10 @@ public class RoleController {
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") UUID id) {
+    public String removeRole(@PathVariable(value = "id") UUID id, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/roles";
+        }
         roleService.delete(id);
         return "redirect:/roles";
     }

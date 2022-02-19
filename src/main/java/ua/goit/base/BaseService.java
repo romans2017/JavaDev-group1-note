@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.goit.exception.ResourceAlreadyExistsException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -50,7 +49,7 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
     }
 
     @Transactional
-    public D create(D dto) throws ResourceAlreadyExistsException {
+    public D create(D dto) {
         E model = modelMapper.map(dto, entityClass);
         return modelMapper.map(repository.save(model), dtoClass);
     }

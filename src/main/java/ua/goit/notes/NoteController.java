@@ -7,10 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.goit.exception.BadResourceException;
-import ua.goit.exception.ResourceAlreadyExistsException;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +41,7 @@ public class NoteController {
     }
 
     @PostMapping("save_note")
-    public String saveNote(@ModelAttribute("note") @Validated NoteDto note, BindingResult result, Model model) throws BadResourceException, ResourceAlreadyExistsException {
+    public String saveNote(@ModelAttribute("note") @Validated NoteDto note, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("note", note);
             model.addAttribute("create", true);

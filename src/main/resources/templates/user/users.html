@@ -22,7 +22,7 @@
             <tbody>
                 <tr th:each ="user,i : ${users}">
                     <td th:text = "${i.index + 1}"></td>
-                    <td th:text = "${user.userName}"></td>
+                    <td th:text = "${user.Name}"></td>
                     <td id="roles">
                         <ul th:each="role : ${user.roles}">
                             <li th:text="${role.name}"></li>
@@ -33,7 +33,7 @@
                             <div class="btn-group me-2" role="group" aria-label="Second group">
                                 <a th:href="@{/users/{userId}(userId=${user.id})}" type="button"
                                    class="btn btn-warning" id="edit-tooltip">📝</a>
-                                <a th:data-id="${user.id}" th:data-content="${user.userName}" type="button"
+                                <a th:data-id="${user.id}" th:data-content="${user.name}" type="button"
                                    class="btn btn-danger remove_user" data-toggle="modal"
                                 data-target="#remove_modal" id="remove-tooltip">🗑</a>
                             </div>

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.goit.roles.RoleDto;
 import ua.goit.roles.RoleService;
+import ua.goit.validation.OnCreate;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("registration")
+@RequestMapping
 public class RegistrationController {
 
     @Autowired
@@ -36,33 +36,16 @@ public class RegistrationController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping
+    @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("user", new UserDto());
         return "registration";
     }
 
-    @PostMapping
-    public String registrationUser(@ModelAttribute @Validated UserDto user,
+    @PostMapping("/registration")
+    public String registrationUser(@ModelAttribute("user") @Validated({OnCreate.class}) UserDto user,
                                    BindingResult result,
                                    Model model) {
-
-        /*UserDto userFromDb = userService..findUserByName(user.getName());
-        if (result.hasErrors() || userFromDb != null) {
-            model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
-            result
-                    .getFieldErrors()
-                    .forEach(f -> model.addAttribute(f.getField(), f.getDefaultMessage()));
-            if (userFromDb != null) {
-                model.addAttribute("errorUniqueUserName", "This user name is exists! User name must be unique!");
-                return "registration";
-            }
-            return "registration";
-        }
-        user.setRoles(getRoleByDefault());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.update(user);
-        return "redirect:/login";*/
         if (result.hasErrors()) {
             return "registration";
         }

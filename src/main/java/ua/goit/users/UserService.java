@@ -69,6 +69,12 @@ public class UserService extends BaseService<User, UserDto> {
         }
     }
 
+    public boolean isExistByRoleId(UUID role_id) {
+        return repository.existsByRoles_Id(role_id);
+    }
+
+
+
     public Long count() {
         return repository.count();
     }

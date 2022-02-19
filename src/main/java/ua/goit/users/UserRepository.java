@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
     boolean existsByNameIgnoreCase(String userName);
 
     boolean existsByNameIgnoreCaseAndIdIsNot(String userName, UUID id);
+
+    boolean existsByRoles_Id(UUID id);
+
 }
