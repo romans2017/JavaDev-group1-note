@@ -69,10 +69,7 @@ public class RoleController {
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") UUID id, BindingResult result) {
-        if (result.hasErrors()) {
-            return "redirect:/roles";
-        }
+    public String removeRole(@PathVariable(value = "id") UUID id) {
         roleService.delete(id);
         return "redirect:/roles";
     }
