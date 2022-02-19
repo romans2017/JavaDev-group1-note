@@ -18,10 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group">
-                    <textarea class="form-control" id="text" readonly rows="8"
-                              th:text="${note.text}"></textarea>
-                </div>
+                <div th:utext="${htmlContent}"></div>
             </div>
         </div>
     </div>

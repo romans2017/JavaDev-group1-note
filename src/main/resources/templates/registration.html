@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Registration</title>
     <thymeleaf th:include="headers::head"/>
@@ -14,30 +12,20 @@
         <div class="card-header">Registration</div>
         <div class="card-body">
             <h4>Create an account</h4>
-            <form action="/registration" method="POST">
+            <form action="registration" method="post">
                 <div class="mb-3">
-                    <label class="form-label" for="userName">User name</label>
-                    <input type="text" name="userName" id="userName" class="form-control form-control-lg" />
-                    <div th:if="${userName}" th:utext="${userName}" class="alert alert-danger">[error]</div>
+                    <label class="form-label" for="name">name</label>
+                    <input type="text" name="name" id="name" class="form-control" />
+                    <div th:if="${name}" th:utext="${name}" class="alert alert-danger">[error]</div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control form-control-lg" />
+                    <label class="form-label" for="password">password</label>
+                    <input type="password" name="password" id="password" class="form-control" />
                     <div th:if="${password}" th:utext="${password}" class="alert alert-danger">[error]</div>
                 </div>
-<!--                <div class="mb-3">-->
-<!--                    <label for="roles" class="form-label">Roles</label>-->
-<!--                    <select class="form-select" multiple="multiple" id="roles" name="roles">-->
-<!--                        <option th:each="role : ${getRoles}"-->
-<!--                                th:value="${{role.id}}"-->
-<!--                                th:utext="${role.name}">-->
-<!--                    </select>-->
-<!--                    <div th:if="${roles}" th:utext="${roles}" class="alert alert-danger">[error]</div>-->
-<!--                    <div class="alert alert-danger" th:if="${errorRoles}" th:utext="${errorRoles}"/>-->
-<!--                </div>-->
 
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" >Register</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0">or

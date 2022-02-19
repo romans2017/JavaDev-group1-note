@@ -17,7 +17,6 @@ spring:
   h2:
     console.enabled: true
     console.path: /h2
-  # ;DB_CLOSE_ON_EXIT=FALSE
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
@@ -27,6 +26,7 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/h2
+
 ---
 spring:
   config:
@@ -44,6 +44,8 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration/postgres
 ---
 spring:
   config:
@@ -51,13 +53,15 @@ spring:
       on-profile: mysql
   datasource:
     url: jdbc:mysql://localhost:3306/nms?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDateTimeCode=false&amp&serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true
-    username: root
-    password: Fusion
+    username: ${USER_NAME}
+    password: ${DB_PASSWORD}
   jpa:
     show-sql: true
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration/mysql
 ---
 spring:
   config:
@@ -73,7 +77,7 @@ spring:
     show-sql: true
     generate-ddl: false
     open-in-view: false
-#    hibernate:
-#      ddl-auto: validate
+    hibernate:
+      ddl-auto: validate
   flyway:
     locations: classpath:db/migration/postgres

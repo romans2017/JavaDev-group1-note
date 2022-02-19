@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,22 +21,9 @@ import ua.goit.roles.RoleRepository;
 @RequestMapping("registration")
 public class RegistrationController {
 
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final RoleRepository roleRepository;
-    @Autowired
     private final PasswordEncoder passwordEncoder;
-
-    private List<Role> initRoles() {
-        return roleRepository.findAll();
-    }
-
-    private List<Role> getRoleByDefault() {
-        return initRoles().stream()
-                .filter(roleDefault -> roleDefault.getName().equals("user"))
-                .collect(Collectors.toList());
-    }
 
     @GetMapping
     public String registration(Model model) {
@@ -50,7 +36,7 @@ public class RegistrationController {
                                    BindingResult result,
                                    Model model) {
 
-        User userFromDb = userRepository.findUserByName(user.getName());
+        User userFromDb = userRepository.findByName(user.getName());
         if (result.hasErrors() || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
             result
@@ -66,5 +52,11 @@ public class RegistrationController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/login";
+    }
+
+    private List<Role> getRoleByDefault() {
+        return roleRepository.findAll().stream()
+                .filter(roleDefault -> roleDefault.getName().equals("user"))
+                .collect(Collectors.toList());
     }
 }

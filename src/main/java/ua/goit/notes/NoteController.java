@@ -3,6 +3,7 @@ package ua.goit.notes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,8 @@ public class NoteController {
 
     @Autowired
     private final NoteService noteService;
+    @Autowired
+    private final HtmlService htmlService;
 
     private List<NoteDto> getNotes() {
         return noteService.findAll();
@@ -32,15 +35,19 @@ public class NoteController {
     private List<NoteDto> getUserNotes(Authentication authentication) {
         return getNotes().stream()
                 .filter(userNotes -> authentication.getName()
-                        .equals(userNotes.getUser().getName()))
+                        .equals(userNotes.getUser().getUserName()))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("list")
     public String getAllNotes(Model model, Authentication authentication) {
         List<NoteDto> notes = getUserNotes(authentication);
+        notes.forEach(note->{
+            String text = htmlService.markdownToText(note.getText());
+            note.setText(text);
+        });
         model.addAttribute("notes", notes);
-        model.addAttribute("countNotes", notes == null ? 0 : notes.size());
+        model.addAttribute("countNotes", notes.size());
         return "note/notes";
     }
 
@@ -78,16 +85,21 @@ public class NoteController {
     @GetMapping("show_note/{id}")
     public String showNote(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("note", noteService.find(id));
+        model.addAttribute("htmlContent", htmlService.markdownToHtml(noteService.find(id).getText()));
         return "note/show_note";
     }
 
     @GetMapping("share/{id}")
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
         NoteDto note = noteService.find(id);
-        if (note.getAccessType().equals(PUBLIC)) {
-            model.addAttribute("note", note);
-            return "note/note_share";
-        }
+            if (note.getAccessType().equals(PUBLIC)) {
+                String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+                model.addAttribute("note", note);
+                model.addAttribute("userName",userName);
+                String htmlContent = htmlService.markdownToHtml(note.getText());
+                model.addAttribute("htmlContent",htmlContent);
+                return "note/note_share";
+            }
         return "redirect:/login";
     }
 }

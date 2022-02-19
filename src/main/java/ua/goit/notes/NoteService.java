@@ -14,11 +14,10 @@ public class NoteService extends BaseService<Note, NoteDto> {
     private final NoteRepository noteRepository;
     private final UserRepository userRepository;
 
-
     @Override
     public NoteDto create(NoteDto dto){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findUserByName(userName);
+        User user = userRepository.findByName(userName);
         Note note = super.modelMapper.map(dto, Note.class);
         note.setUser(user);
         noteRepository.save(note);

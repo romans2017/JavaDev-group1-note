@@ -19,21 +19,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each ="role,i : ${roles}">
-                <td th:text = "${i.index + 1}"></td>
-                <td th:text = "${role.name}"></td>
-                <td>
-                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                        <div class="btn-group me-2" role="group" aria-label="Second group">
-                            <a th:href="@{/roles/{id} (id=${role.id})}" type="button"
-                               class="btn btn-warning" id="edit-tooltip">📝</a>
-                            <a th:data-id="${role.id}" th:data-content="${role.name}" type="button"
-                               class="btn btn-danger remove_role" data-toggle="modal"
-                               data-target="#remove_modal" id="remove-tooltip">🗑</a>
+                <tr th:each ="role,i : ${roles}">
+                    <td th:text = "${i.index + 1}"></td>
+                    <td th:text = "${role.name}"></td>
+                    <td>
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group me-2" role="group" aria-label="Second group">
+                                <a th:href="@{/roles/{id} (id=${role.id})}" type="button"
+                                   class="btn btn-warning" id="edit-tooltip">📝</a>
+                                <a th:data-id="${role.id}" th:data-content="${role.name}" type="button"
+                                   class="btn btn-danger remove_role" data-toggle="modal"
+                                   data-target="#remove_modal" id="remove-tooltip">🗑</a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
