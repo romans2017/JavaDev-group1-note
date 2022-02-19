@@ -8,8 +8,9 @@ import ua.goit.roles.RoleDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor(force = true)
@@ -17,8 +18,8 @@ public class UserDto implements BaseDto {
 
     private UUID id;
 
-    @Size(min = 5, message = "User name should be at least 5 character.")
-    private String userName;
+    @Length(min = 5, message = "User name should be at least 5 character.")
+    private String name;
 
     @NotBlank
     @Length(min = 5, message = "Password should be at least 5 character.")

@@ -19,10 +19,10 @@
                 <input hidden type="text" class="form-control" id="id" value="{id}">
             </div>
             <div class="mb-3">
-                <label for="userName" class="form-label">User name</label>
-                <input type="text" class="form-control" id="userName" th:field="*{userName}" placeholder="User name">
-                <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
-                <div class="alert alert-danger" th:if="${errorUniqueUserName}" th:utext="${errorUniqueUserName}"/>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+<!--                <div class="alert alert-danger" th:if="${errorUniqueUserName}" th:utext="${errorUniqueUserName}"/>-->
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -45,7 +45,9 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+            <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" class="error">
+                <p th:errors="*{global}"></p>
+            </div>
         </div>
         </form>
     </div>

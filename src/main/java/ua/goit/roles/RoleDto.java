@@ -2,20 +2,21 @@ package ua.goit.roles;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseDto;
+import ua.goit.validation.UniqueValidation;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor(force = true)
-//@UniqueValidation(classService = RoleService.class)
+@UniqueValidation(classService = RoleService.class)
 public class RoleDto implements BaseDto {
 
     private UUID id;
 
     @NotBlank
-    @Size(min=3, message = "Role should be at least 3 character.")
+    @Length(min=3, message = "Role should be at least 3 character.")
     private String name;
 }
