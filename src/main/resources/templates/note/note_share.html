@@ -1,0 +1,27 @@
+<html  xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title> Show note</title>
+    <thymeleaf th:include="headers::head"></thymeleaf>
+</head>
+<body>
+<div><br> <br></div>
+<div class="container">
+    <div class="row">
+        <h2 th:text="${note.name}"></h2>
+    </div>
+    <div class="card border-primary mb-3" style="max-width: 40rem;">
+        <div class="card-header" th:text="'Note by ' + ${userName}"></div>
+        <div class="card-body">
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                </div>
+            </div>
+
+            <div class="row">
+                <div th:utext="${htmlContent}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
