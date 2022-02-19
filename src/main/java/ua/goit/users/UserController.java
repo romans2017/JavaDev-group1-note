@@ -2,6 +2,7 @@ package ua.goit.users;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,7 +78,7 @@ public class UserController {
         return "user/user";
     }
 
-    @PostMapping(value = {"/{userId}"})
+    @PostMapping(value = {"{userId}"})
     public String updateUser(Model model, @PathVariable UUID userId,
                              @ModelAttribute("user") UserDto user, BindingResult result) {
         model.addAttribute("allRoles", roleService.findAll());

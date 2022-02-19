@@ -1,6 +1,7 @@
 package ua.goit.users;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,9 @@ public class RegistrationController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private List<Role> initRoles() {
-        return roleRepository.findAll();
-    }
-
     @GetMapping
     public String registration(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("getRoles", initRoles());
         return "registration";
     }
 
@@ -41,27 +37,29 @@ public class RegistrationController {
                                    Model model) {
 
         User userFromDb = userRepository.findByName(user.getName());
-        model.addAttribute("getRoles", initRoles());
-        if (result.hasErrors() || user.getRoles() == null || userFromDb != null) {
+        if (result.hasErrors() || userFromDb != null) {
             model.addAttribute("message", "Something wrong! Errors: " + result.getFieldErrors().size());
             result
                     .getFieldErrors()
                     .forEach(f -> model.addAttribute(f.getField(), f.getDefaultMessage()));
-
             result
                     .getFieldErrors()
                     .forEach(f -> System.out.println(f.getField() + ": " + f.getDefaultMessage()));
-            if (user.getRoles() == null) {
-                model.addAttribute("errorRoles", "User has minimum one role!");
-                return "registration";
-            } else if (userFromDb != null) {
+            if (userFromDb != null) {
                 model.addAttribute("errorUniqueUserName", "This user name is exists! User name must be unique!");
                 return "registration";
             }
             return "registration";
         }
+        user.setRoles(getRoleByDefault());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/login";
+    }
+
+    private List<Role> getRoleByDefault() {
+        return roleRepository.findAll().stream()
+                .filter(roleDefault -> roleDefault.getName().equals("user"))
+                .collect(Collectors.toList());
     }
 }
