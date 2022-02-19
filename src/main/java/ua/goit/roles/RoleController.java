@@ -1,32 +1,27 @@
 package ua.goit.roles;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.goit.exception.BadResourceException;
 import ua.goit.exception.ResourceAlreadyExistsException;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Controller
 //@PreAuthorize("hasAuthority('admin')")
 @RequestMapping("roles")
 public class RoleController {
 
-    @Autowired
-    private RoleService service;
-
-    private List<RoleDto> init() {
-        return service.findAll();
-    }
+    private final RoleService service;
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("roles", init());
+        model.addAttribute("roles", service.findAll());
         return "role/roles";
     }
 
@@ -38,21 +33,15 @@ public class RoleController {
         return "role/role";
     }
 
+    @SneakyThrows
     @PostMapping("add")
-    public String addRole(Model model, @ModelAttribute("role") @Valid RoleDto role,
-                          BindingResult result) throws BadResourceException, ResourceAlreadyExistsException {
-        boolean isExistByName = service.existsByName(role.getName());
+    public String addRole(Model model,
+                          @ModelAttribute("role") @Valid RoleDto role,
+                          BindingResult result){
         model.addAttribute("add", true);
-        if (result.hasErrors() || isExistByName) {
-            if (isExistByName) {
-                model.addAttribute("errorUniqueRole", "This role is exists! Role must be unique!");
-                return "role/role";
-            }
-            return "role/role";
-        } else {
-            service.save(role);
-            return "redirect:/roles";
-        }
+        if (result.hasErrors()) {return "role/role";}
+        else {service.save(role);
+            return "redirect:/roles";}
     }
 
     @GetMapping("/{id}")

@@ -1,9 +1,6 @@
 package ua.goit.roles;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.goit.base.BaseService;
@@ -12,13 +9,11 @@ import ua.goit.exception.ResourceAlreadyExistsException;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class RoleService extends BaseService<Role, RoleDto> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     boolean existsById(UUID id) {
         return roleRepository.existsById(id);
@@ -54,14 +49,5 @@ public class RoleService extends BaseService<Role, RoleDto> {
         return modelMapper.map(
                 roleRepository.save(
                         modelMapper.map(role, Role.class)), RoleDto.class);
-    }
-
-    @Transactional
-    public void deleteById(UUID id) throws ResourceNotFoundException {
-        if (!existsById(id)) {
-            throw new ResourceNotFoundException("Cannot find role with id: " + id);
-        } else {
-            roleRepository.deleteById(id);
-        }
     }
 }

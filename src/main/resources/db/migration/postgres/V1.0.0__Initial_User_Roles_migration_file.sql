@@ -15,8 +15,8 @@ create table users (
 
 -- user_role
 create table user_role(
-	user_id varchar(50) not null,
-	role_id varchar(50) not null,
+	user_id uuid not null,
+	role_id uuid not null,
 	CONSTRAINT pk_users_roles PRIMARY KEY (role_id, user_id),
 	CONSTRAINT fk_users_user_id FOREIGN KEY(user_id) REFERENCES users(id),
 	CONSTRAINT fk_roles_role_id FOREIGN KEY(role_id) REFERENCES roles(id)

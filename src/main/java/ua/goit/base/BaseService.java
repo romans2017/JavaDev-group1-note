@@ -68,4 +68,8 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
     public void delete(UUID id) {
         repository.deleteById(id);
     }
+
+    public boolean isExist(BaseDto dto) {
+        return false;
+    }
 }

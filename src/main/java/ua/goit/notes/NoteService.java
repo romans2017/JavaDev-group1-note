@@ -14,7 +14,6 @@ public class NoteService extends BaseService<Note, NoteDto> {
     private final NoteRepository noteRepository;
     private final UserRepository userRepository;
 
-
     @Override
     public NoteDto create(NoteDto dto){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
