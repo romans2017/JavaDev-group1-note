@@ -9,6 +9,9 @@
     <div class="row">
         <h2>Roles</h2>
     </div>
+    <div class="alert alert-danger" th:if="${errorConstraint != null}">
+        <p th:text="${errorConstraint}"></p>
+    </div>
     <div class="row">
         <table class="table table-striped">
             <thead>

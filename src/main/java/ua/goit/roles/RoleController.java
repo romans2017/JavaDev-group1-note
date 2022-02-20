@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.goit.users.UserService;
 import ua.goit.validation.UserExistValidation;
 
+import javax.validation.ConstraintViolationException;
 import java.util.UUID;
 
 @Controller
@@ -27,6 +28,7 @@ public class RoleController {
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("errorConstraint", null);
         return "role/roles";
     }
 
@@ -71,8 +73,16 @@ public class RoleController {
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") @UserExistValidation UUID id) {
+    public String removeRole(@PathVariable(value = "id") @UserExistValidation UUID id) throws ConstraintViolationException {
         roleService.delete(id);
         return "redirect:/roles";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolationException(
+            Exception ex, Model model) {
+        model.addAttribute("errorConstraint", ex.getMessage());
+        model.addAttribute("roles", roleService.findAll());
+        return "role/roles";
     }
 }
