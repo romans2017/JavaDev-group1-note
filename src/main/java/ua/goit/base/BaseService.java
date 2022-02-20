@@ -1,11 +1,11 @@
 package ua.goit.base;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.goit.exception.ResourceAlreadyExistsException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto> {
 
@@ -50,7 +51,7 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
     }
 
     @Transactional
-    public D create(D dto) throws ResourceAlreadyExistsException {
+    public D create(D dto) {
         E model = modelMapper.map(dto, entityClass);
         return modelMapper.map(repository.save(model), dtoClass);
     }

@@ -3,7 +3,6 @@
     <title>Note</title>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <thymeleaf th:include="headers::head"></thymeleaf>
-
 </head>
 <body>
 <div th:insert="navigation::nav"></div>
@@ -61,10 +60,9 @@
                 <a type="button" class="btn btn-primary" href="/note/list">Cancel</a>
             </div>
         </div>
-
     </form>
 </div>
-<script>
+<script th:if="${note.id == null}">
     document.getElementById("private").setAttribute("checked", "checked")
 </script>
 </body>
