@@ -26,7 +26,6 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/h2
-
 ---
 spring:
   config:

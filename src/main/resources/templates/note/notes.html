@@ -53,9 +53,9 @@
                                    class="btn btn-danger remove_note" data-toggle="modal"
                                    data-target="#remove_modal" id="remove-tooltip">🗑️</a>
                             </div>
-                            <div>
-                                <a type="button" class="btn btn-primary copy-link"
-                                   th:data-link="'/note/share/'+ ${note.id}" id="copy-tooltip">🔗</a>
+                            <div th:if="${note.accessType == T(ua.goit.notes.AccessType).PUBLIC}">
+                                <a  type="button" class="btn btn-primary copy-link"
+                                    th:data-link="'/note/share/'+ ${note.id}" id="copy-tooltip">🔗</a>
                             </div>
                         </div>
                     </div>

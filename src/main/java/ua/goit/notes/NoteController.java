@@ -1,33 +1,32 @@
 package ua.goit.notes;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.goit.exception.BadResourceException;
-import ua.goit.exception.ResourceAlreadyExistsException;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 import static ua.goit.notes.AccessType.PUBLIC;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("note")
 public class NoteController {
 
-    private final NoteService noteService;
-    private final HtmlService htmlService;
+    NoteService noteService;
 
     @GetMapping("list")
     public String getAllNotes(Model model) {
         List<NoteDto> notes = noteService.findAll();
-        notes.forEach(note->{
-            String text = htmlService.markdownToText(note.getText());
+        notes.forEach(note -> {
+            String text = noteService.markdownToText(note.getText());
             note.setText(text);
         });
         model.addAttribute("notes", notes);
@@ -43,7 +42,7 @@ public class NoteController {
     }
 
     @PostMapping("save_note")
-    public String saveNote(@ModelAttribute("note") @Valid NoteDto note, BindingResult result, Model model) throws BadResourceException, ResourceAlreadyExistsException {
+    public String saveNote(@ModelAttribute("note") @Validated NoteDto note, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("note", note);
             model.addAttribute("create", true);
@@ -69,21 +68,20 @@ public class NoteController {
     @GetMapping("show_note/{id}")
     public String showNote(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("note", noteService.find(id));
-        model.addAttribute("htmlContent", htmlService.markdownToHtml(noteService.find(id).getText()));
+        model.addAttribute("htmlContent", noteService.markdownToHtml(noteService.find(id).getText()));
         return "note/show_note";
     }
 
     @GetMapping("share/{id}")
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
         NoteDto note = noteService.find(id);
-            if (note.getAccessType().equals(PUBLIC)) {
-                String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-                model.addAttribute("note", note);
-                model.addAttribute("userName",userName);
-                String htmlContent = htmlService.markdownToHtml(note.getText());
-                model.addAttribute("htmlContent",htmlContent);
-                return "note/note_share";
-            }
+        if (note.getAccessType().equals(PUBLIC)) {
+            model.addAttribute("note", note);
+            model.addAttribute("userName", note.getUser().getName());
+            String htmlContent = noteService.markdownToHtml(note.getText());
+            model.addAttribute("htmlContent", htmlContent);
+            return "note/note_share";
+        }
         return "redirect:/login";
     }
 }

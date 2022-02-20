@@ -11,9 +11,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "notes")
 public class Note implements BaseEntity<UUID> {
