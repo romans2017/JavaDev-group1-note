@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="name">Name</label>
-                    <input type="text" id="name" th:field="*{name}" class="form-control form-control-lg"/>
+                    <input type="text" id="name" th:field="*{name}" class="form-control"/>
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}">
                         <ul>
                             <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password">Password</label>
-                    <input type="password" id="password" th:field="*{password}" class="form-control form-control-lg"/>
+                    <input type="password" id="password" th:field="*{password}" class="form-control"/>
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}">
                         <ul>
                             <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>

@@ -8,12 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.goit.users.UserService;
+import ua.goit.validation.UserExistValidation;
 
 import java.util.UUID;
 
 @Controller
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("roles")
+@Validated
 public class RoleController {
 
     @Autowired
@@ -69,7 +71,7 @@ public class RoleController {
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") UUID id) {
+    public String removeRole(@PathVariable(value = "id") @UserExistValidation UUID id) {
         roleService.delete(id);
         return "redirect:/roles";
     }
