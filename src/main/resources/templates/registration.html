@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+>
+<head>
+    <title>Registration</title>
+    <thymeleaf th:include="headers::head"/>
+</head>
+<body>
+<div><br> <br> <br></div>
+<div class="container">
+    <div class="row">
+    </div>
+    <div class="card border-primary mb-3" style="max-width: 20rem;">
+        <div class="card-header">Registration</div>
+        <div class="card-body">
+            <h4>Create an account</h4>
+            <form th:action="@{/registration}" th:object="${user}" method="POST">
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:errors="*{global}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="name">name</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">password</label>
+                    <input type="password" id="password" th:field="*{password}" class="form-control"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">or
+                    <a href="/login" class="fw-bold text-body"><u>Login here</u></a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

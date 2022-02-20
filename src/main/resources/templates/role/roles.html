@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Roles page</title>
+    <thymeleaf th:replace="headers :: head" />
+</head>
+<body>
+<div th:include="navigation::nav"></div>
+<div class="container">
+    <div class="row">
+        <h2>Roles</h2>
+    </div>
+    <div class="alert alert-danger" th:if="${errorConstraint != null}">
+        <p th:text="${errorConstraint}"></p>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">name</th>
+                <th scope="col">action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each ="role,i : ${roles}">
+                <td th:text = "${i.index + 1}"></td>
+                <td th:text = "${role.name}"></td>
+                <td>
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <a th:href="@{/roles/{id} (id=${role.id})}" type="button"
+                               class="btn btn-warning" id="edit-tooltip">📝</a>
+                            <a th:data-id="${role.id}" th:data-content="${role.name}" type="button"
+                               class="btn btn-danger remove_role" data-toggle="modal"
+                               data-target="#remove_modal" id="remove-tooltip" th:if="${role.name != 'admin'}">🗑</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="Second group">
+                <a th:href="@{/roles/add}" type="button" class="btn btn-primary">New</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="remove_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Removing role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-dismiss="modal">No</a>
+                <a type="button" id="remove" class="btn btn-danger ">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script>
+    $(document).ready(function () {
+        $(".remove_role").click(function () {
+            const name_role = $(this).attr("data-content");
+            const id_role = $(this).attr("data-id");
+            const remove_href = '/roles/remove_role/' + id_role;
+            $("#remove_modal").show();
+            $(".modal-body").text('Do you want to remove the role "' + name_role + '"?');
+            $(".modal-footer #remove").attr('href', remove_href);
+        });
+        $(".copy-link").click(function () {
+            const link = $(this).attr("data-link");
+            let domain = document.domain;
+            if (domain === "localhost")
+                domain += ":9999";
+            navigator.clipboard.writeText(domain + link);
+            $("#success-link").show();
+            setTimeout(function () {
+                $("#success-link").hide();
+            }, 2000);
+        });
+
+        tippy('[data-tippy-content]', {
+            theme: 'blue',
+            placement: 'bottom'
+        });
+        tippy('#edit-tooltip', {
+            theme: 'blue',
+            placement: 'top',
+            content: 'Edit'
+        });
+        tippy('#remove-tooltip', {
+            theme: 'blue',
+            placement: 'top',
+            content: 'Remove'
+        });
+    });
+</script>
+</body>
+</html>

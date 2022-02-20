@@ -1,0 +1,135 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Notes</title>
+    <thymeleaf th:include="headers::head"></thymeleaf>
+    <style>
+        .alert {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div th:include="navigation::nav"></div>
+<div class="alert alert-success" id="success-link" role="alert">
+    A link was copy successful!
+</div>
+
+<div class="container">
+    <div class="row">
+        <h2 th:text="'My notes: ' + ${countNotes} + ' pcs' "></h2>
+    </div>
+    <div class="row">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="Second group">
+                <a href="/note/create" type="button" class="btn btn-primary">New</a>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">name</th>
+                <th scope="col">access type</th>
+                <th scope="col">action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="note,itr: ${notes}">
+                <td th:text="${itr.index + 1}"></td>
+                <td>
+                    <a th:href="'/note/show_note/' + ${note.id}" th:data-tippy-content="${note.text}"
+                       th:text="${note.name}"></a>
+                </td>
+                <td th:text="${note.accessType}"></td>
+                <td>
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <div>
+                                <a th:href="'/note/edit_note/' + ${note.id}" type="button"
+                                   class="btn btn-warning" id="edit-tooltip">📝</a>
+                            </div>
+                            <div>
+                                <a th:data-id="${note.id}" th:data-content="${note.name}" type="button"
+                                   class="btn btn-danger remove_note" data-toggle="modal"
+                                   data-target="#remove_modal" id="remove-tooltip">🗑️</a>
+                            </div>
+                            <div th:if="${note.accessType == T(ua.goit.notes.AccessType).PUBLIC}">
+                                <a  type="button" class="btn btn-primary copy-link"
+                                    th:data-link="'/note/share/'+ ${note.id}" id="copy-tooltip">🔗</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="remove_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Removing note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-dismiss="modal">No</a>
+                <a type="button" id="remove" class="btn btn-danger ">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script>
+    $(document).ready(function () {
+        $(".remove_note").click(function () {
+            const name_note = $(this).attr("data-content");
+            const id_note = $(this).attr("data-id");
+            const remove_href = '/note/remove_note/' + id_note;
+            $("#remove_modal").show();
+            $(".modal-body").text('Do you want to remove the note "' + name_note + '"?');
+            $(".modal-footer #remove").attr('href', remove_href);
+        });
+        $(".copy-link").click(function () {
+            const link = $(this).attr("data-link");
+            let domain = document.domain;
+            if (domain === "localhost")
+                domain += ":9999";
+            navigator.clipboard.writeText(domain + link);
+            $("#success-link").show();
+            setTimeout(function () {
+                $("#success-link").hide();
+            }, 2000);
+        });
+
+        tippy('[data-tippy-content]', {
+            theme: 'blue',
+            placement: 'bottom'
+        });
+        tippy('#edit-tooltip', {
+            theme: 'blue',
+            placement: 'top',
+            content: 'Edit'
+        });
+        tippy('#remove-tooltip', {
+            theme: 'blue',
+            placement: 'top',
+            content: 'Remove'
+        });
+        tippy('#copy-tooltip', {
+            theme: 'blue',
+            placement: 'top',
+            content: 'Copy link'
+        });
+    });
+</script>
+
+</body>
+</html>

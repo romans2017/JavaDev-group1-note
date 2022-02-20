@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${add} ? 'Create User' : 'Edit User'"/>
+    <thymeleaf th:replace="headers :: head"/>
+</head>
+<body>
+<div th:insert="navigation::nav"></div>
+<div class="container">
+    <br>
+    <div class="row">
+        <h2 id="edit_page" th:text="${add} ? 'Create User:' : 'Edit User:'"></h2>
+        <form th:action="${add} ? @{/users/add} : @{/users/{userId}(userId=${user.id})}"
+              th:object="${user}" method="POST">
+            <div class="row">
+                <br/>
+
+                <div class="mb-3">
+                    <input hidden type="text" class="form-control" th:field="*{id}">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name">
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}">
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">role</label>
+                    <ul>
+                        <li th:each="role : ${allRoles}">
+                            <input type="checkbox" th:field="*{roles}" th:value="${role.id}"
+                                   th:errorclass="is-invalid"/>
+                            <label th:for="${#ids.prev('roles')}" th:text="${role.name}"></label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <input type="submit" th:value="${add} ? 'Create' : 'Update'" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:errors="*{global}"></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

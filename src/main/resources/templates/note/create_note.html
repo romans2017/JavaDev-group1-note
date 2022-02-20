@@ -1,0 +1,69 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Note</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <thymeleaf th:include="headers::head"></thymeleaf>
+</head>
+<body>
+<div th:insert="navigation::nav"></div>
+<div class="container">
+    <br>
+    <div class="row">
+        <div th:if="${create}">
+            <h3>Create new note</h3>
+        </div>
+        <div th:unless="${create}">
+            <h3>Update note</h3>
+        </div>
+    </div>
+    <div class="row"><p></p></div>
+    <form th:action="@{/note/save_note}" th:object="${note}" method="post">
+        <div class="row">
+            <div class="mb-3">
+                <input type="hidden" class="form-control" id="id" value="{id}" th:field="*{id}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Name" required minlength="5" maxlength="100"
+                       th:field="*{name}">
+            </div>
+            <div class="form-group">
+                <label for="text" class="form-label mt-4">Text</label>
+                <textarea class="form-control" required id="text" rows="8" wrap="hard"  minlength="5" maxlength="10000"
+                          placeholder="Enter your text"
+                          th:field="*{text}"
+                          th:text="${note.text}"></textarea>
+            </div>
+            <div class="mb-3">
+                <legend class="mt-4">Access type</legend>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="private"
+                           value="PRIVATE" th:field="*{accessType}">
+                    <label class="form-check-label" for="private">
+                        private
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="public" value="PUBLIC"
+                           th:field="*{accessType}">
+                    <label class="form-check-label" for="public">
+                        public
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a type="button" class="btn btn-primary" href="/note/list">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:if="${note.id == null}">
+    document.getElementById("private").setAttribute("checked", "checked")
+</script>
+</body>
+</html>
