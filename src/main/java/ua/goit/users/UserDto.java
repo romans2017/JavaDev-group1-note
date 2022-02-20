@@ -23,11 +23,7 @@ public class UserDto implements BaseDto {
 
     private UUID id;
 
-<<<<<<< HEAD
     @Pattern(regexp = "[a-zA-Z0-9]*",groups = {OnCreate.class,OnUpdate.class},message = "User name should be alphanumeric")
-=======
-    @Pattern(regexp = "^[a-zA-Z0-9]*")
->>>>>>> origin/main
     @Length(groups = {OnCreate.class, OnUpdate.class}, min = 5, max = 50, message = "User name should be at least 5 character and maximum length of 50.")
     private String name;
 
