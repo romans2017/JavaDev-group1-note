@@ -39,6 +39,6 @@ public class User implements BaseEntity<UUID> {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
-    private List<Note> notes;
+   /* @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Note> notes;*/
 }

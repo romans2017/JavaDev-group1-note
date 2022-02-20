@@ -32,7 +32,7 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
         dtoClass = (Class<D>) params[1];
     }
 
-    public  List<D> findAll() {
+    public List<D> findAll() {
         List<D> dtoList = new ArrayList<>();
         repository.findAll().forEach(item -> dtoList.add(modelMapper.map(item, dtoClass)));
         return dtoList;

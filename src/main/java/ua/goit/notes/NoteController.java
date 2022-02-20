@@ -75,9 +75,9 @@ public class NoteController {
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
         NoteDto note = noteService.find(id);
         if (note.getAccessType().equals(PUBLIC)) {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+           // String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             model.addAttribute("note", note);
-            model.addAttribute("userName", userName);
+            model.addAttribute("userName", note.getUser().getName());
             String htmlContent = htmlService.markdownToHtml(note.getText());
             model.addAttribute("htmlContent", htmlContent);
             return "note/note_share";
