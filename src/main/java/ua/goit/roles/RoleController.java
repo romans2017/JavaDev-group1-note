@@ -1,32 +1,35 @@
 package ua.goit.roles;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.goit.exception.BadResourceException;
-import ua.goit.exception.ResourceAlreadyExistsException;
+import ua.goit.users.UserService;
+import ua.goit.validation.deleteAdmin.NonAdminValidation;
+import ua.goit.validation.deleteRole.UserExistValidation;
 
-import javax.validation.Valid;
-import java.util.List;
+import javax.validation.ConstraintViolationException;
 import java.util.UUID;
 
 @Controller
-//@PreAuthorize("hasAuthority('admin')")
+@PreAuthorize("hasAuthority('admin')")
 @RequestMapping("roles")
+@Validated
 public class RoleController {
 
     @Autowired
-    private RoleService service;
+    private RoleService roleService;
 
-    private List<RoleDto> init() {
-        return service.findAll();
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("roles", init());
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("errorConstraint", null);
         return "role/roles";
     }
 
@@ -39,54 +42,49 @@ public class RoleController {
     }
 
     @PostMapping("add")
-    public String addRole(Model model, @ModelAttribute("role") @Valid RoleDto role,
-                          BindingResult result) throws BadResourceException, ResourceAlreadyExistsException {
-        boolean isExistByName = service.existsByName(role.getName());
-        model.addAttribute("add", true);
-        if (result.hasErrors() || isExistByName) {
-            if (isExistByName) {
-                model.addAttribute("errorUniqueRole", "This role is exists! Role must be unique!");
-                return "role/role";
-            }
+    public String addRole(Model model, @ModelAttribute("role") @Validated RoleDto role,
+                          BindingResult result) {
+        if (result.hasErrors()) {
+            model.addAttribute("add", true);
+            model.addAttribute("allRoles", roleService.findAll());
+            model.addAttribute("role", role);
             return "role/role";
-        } else {
-            service.save(role);
-            return "redirect:/roles";
         }
+        roleService.create(role);
+        return "redirect:/roles";
     }
 
     @GetMapping("/{id}")
-    public String showEdit(@PathVariable UUID id, Model model) throws ResourceAlreadyExistsException {
-        model.addAttribute("role", service.find(id));
+    public String showEdit(@PathVariable UUID id, Model model) {
+        model.addAttribute("add", false);
+        model.addAttribute("role", roleService.find(id));
         return "role/role";
     }
 
     @PostMapping("/{id}")
-    public String updateRole(Model model, @PathVariable UUID id, @ModelAttribute("role") @Valid RoleDto role,
+    public String updateRole(Model model, @PathVariable UUID id, @ModelAttribute("role") @Validated RoleDto role,
                              BindingResult result) {
-        boolean isExistByName = service.existsByName(role.getName());
-        try {
-            if (result.hasErrors() || isExistByName) {
-                if (isExistByName) {
-                    model.addAttribute("errorUniqueRole", "This role is exists! Role must be unique!");
-                    return "role/role";
-                }
-                return "role/role";
-            } else {
-                service.update(id, role);
-                return "redirect:/roles";
-            }
-        } catch (Exception ex) {
-            String errorMessage = ex.getMessage();
-            model.addAttribute("errorMessage", errorMessage);
+        if (result.hasErrors()) {
             model.addAttribute("add", false);
+            model.addAttribute("allRoles", roleService.findAll());
             return "role/role";
         }
+        roleService.update(id, role);
+        return "redirect:/roles";
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") UUID id) {
-        service.delete(id);
+    public String removeRole(@PathVariable(value = "id") @UserExistValidation @NonAdminValidation(classService = RoleService.class) UUID id)
+            throws ConstraintViolationException {
+        roleService.delete(id);
         return "redirect:/roles";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolationException(
+            Exception ex, Model model) {
+        model.addAttribute("errorConstraint", ex.getMessage());
+        model.addAttribute("roles", roleService.findAll());
+        return "role/roles";
     }
 }

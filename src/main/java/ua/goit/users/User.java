@@ -1,8 +1,6 @@
 package ua.goit.users;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import ua.goit.base.BaseEntity;
@@ -14,13 +12,11 @@ import java.util.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements BaseEntity<UUID> {
-
-    private static final long serialVersionUID = 5686706842794258419L;
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -43,6 +39,6 @@ public class User implements BaseEntity<UUID> {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Note> notes;
 }

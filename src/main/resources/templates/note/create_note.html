@@ -64,7 +64,7 @@
 
     </form>
 </div>
-<script>
+<script th:if="${note.id == null}">
     document.getElementById("private").setAttribute("checked", "checked")
 </script>
 </body>

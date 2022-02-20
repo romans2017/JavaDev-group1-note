@@ -1,9 +1,6 @@
--- CREATE DATABASE NMS;
--- USE NMS;
-
 CREATE TABLE roles (
   id varchar(36) NOT NULL,
-  role_name varchar(255) DEFAULT NULL,
+  name varchar(255) DEFAULT NULL,
   PRIMARY KEY (id));
 
 CREATE TABLE users (
@@ -26,6 +23,7 @@ CREATE TABLE notes (
   name varchar(100) DEFAULT NULL,
   text varchar(10000) DEFAULT NULL,
   user_id varchar(36) DEFAULT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id),
   PRIMARY KEY (id));
 
 INSERT INTO roles VALUES

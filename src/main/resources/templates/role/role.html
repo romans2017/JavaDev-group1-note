@@ -16,14 +16,12 @@
             <div class="row">
                 <br/>
                 <div class="mb-3">
-                    <label for="id" class="form-label">id</label>
-                    <input type="hidden" disabled class="form-control" id="id" th:utext="${role.id}">
+                    <input hidden type="text" class="form-control" th:field="*{id}">
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Role name</label>
                     <input type="text" class="form-control" id="name" placeholder="Role name" th:field="*{name}">
                     <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
-                    <div class="alert alert-danger" th:if="${errorUniqueRole}" th:utext="${errorUniqueRole}"/>
                 </div>
                 <div class="row">
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -32,7 +30,9 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:errors="*{global}"></p>
+                </div>
             </div>
         </form>
     </div>

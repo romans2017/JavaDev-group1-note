@@ -9,6 +9,9 @@
     <div class="row">
         <h2>Roles</h2>
     </div>
+    <div class="alert alert-danger" th:if="${errorConstraint != null}">
+        <p th:text="${errorConstraint}"></p>
+    </div>
     <div class="row">
         <table class="table table-striped">
             <thead>
@@ -19,21 +22,21 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each ="role,i : ${roles}">
-                    <td th:text = "${i.index + 1}"></td>
-                    <td th:text = "${role.name}"></td>
-                    <td>
-                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                            <div class="btn-group me-2" role="group" aria-label="Second group">
-                                <a th:href="@{/roles/{id} (id=${role.id})}" type="button"
-                                   class="btn btn-warning" id="edit-tooltip">📝</a>
-                                <a th:data-id="${role.id}" th:data-content="${role.name}" type="button"
-                                   class="btn btn-danger remove_role" data-toggle="modal"
-                                   data-target="#remove_modal" id="remove-tooltip">🗑</a>
-                            </div>
+            <tr th:each ="role,i : ${roles}">
+                <td th:text = "${i.index + 1}"></td>
+                <td th:text = "${role.name}"></td>
+                <td>
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <a th:href="@{/roles/{id} (id=${role.id})}" type="button"
+                               class="btn btn-warning" id="edit-tooltip">📝</a>
+                            <a th:data-id="${role.id}" th:data-content="${role.name}" type="button"
+                               class="btn btn-danger remove_role" data-toggle="modal"
+                               data-target="#remove_modal" id="remove-tooltip" th:if="${role.name != 'admin'}">🗑</a>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
