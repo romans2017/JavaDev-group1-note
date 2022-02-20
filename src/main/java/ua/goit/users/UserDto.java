@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseDto;
 import ua.goit.roles.RoleDto;
-import ua.goit.validation.OnCreate;
-import ua.goit.validation.OnUpdate;
-import ua.goit.validation.UniqueValidation;
+import ua.goit.validation.unique.OnCreate;
+import ua.goit.validation.unique.OnUpdate;
+import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

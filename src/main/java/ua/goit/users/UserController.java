@@ -8,15 +8,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.goit.roles.RoleService;
-import ua.goit.validation.OnCreate;
-import ua.goit.validation.OnUpdate;
+import ua.goit.validation.deleteAdmin.NonAdminValidation;
+import ua.goit.validation.unique.OnCreate;
+import ua.goit.validation.unique.OnUpdate;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("users")
+@Validated
 public class UserController {
 
     @Autowired
@@ -28,9 +31,9 @@ public class UserController {
     @GetMapping
     public String getUsers(Model model) {
         List<UserDto> users = userService.findAll();
+        model.addAttribute("errorConstraint", null);
         model.addAttribute("users", users);
         model.addAttribute("countNotes", users == null ? 0 : users.size());
-        model.addAttribute("allRoles", roleService.findAll());
         return "user/users";
     }
 
@@ -77,8 +80,18 @@ public class UserController {
     }
 
     @GetMapping("remove_user/{id}")
-    public String removeUser(@PathVariable(value = "id") UUID id) {
+    public String removeUser(@PathVariable(value = "id") @NonAdminValidation(classService = UserService.class) UUID id) throws ConstraintViolationException {
         userService.delete(id);
         return "redirect:/users";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolationException(
+            Exception ex, Model model) {
+        List<UserDto> users = userService.findAll();
+        model.addAttribute("errorConstraint", ex.getMessage());
+        model.addAttribute("users", users);
+        model.addAttribute("countNotes", users == null ? 0 : users.size());
+        return "user/users";
     }
 }

@@ -8,7 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.goit.users.UserService;
-import ua.goit.validation.UserExistValidation;
+import ua.goit.validation.deleteAdmin.NonAdminValidation;
+import ua.goit.validation.deleteRole.UserExistValidation;
 
 import javax.validation.ConstraintViolationException;
 import java.util.UUID;
@@ -73,7 +74,8 @@ public class RoleController {
     }
 
     @GetMapping("remove_role/{id}")
-    public String removeRole(@PathVariable(value = "id") @UserExistValidation UUID id) throws ConstraintViolationException {
+    public String removeRole(@PathVariable(value = "id") @UserExistValidation @NonAdminValidation(classService = RoleService.class) UUID id)
+            throws ConstraintViolationException {
         roleService.delete(id);
         return "redirect:/roles";
     }

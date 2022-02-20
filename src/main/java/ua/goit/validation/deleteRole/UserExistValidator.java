@@ -1,7 +1,8 @@
-package ua.goit.validation;
+package ua.goit.validation.deleteRole;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.goit.users.UserService;
+import ua.goit.validation.deleteRole.UserExistValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

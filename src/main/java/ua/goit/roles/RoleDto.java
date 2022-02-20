@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseDto;
-import ua.goit.validation.UniqueValidation;
+import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;

@@ -1,9 +1,10 @@
-package ua.goit.validation;
+package ua.goit.validation.unique;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
+import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

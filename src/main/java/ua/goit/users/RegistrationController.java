@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.goit.roles.RoleDto;
 import ua.goit.roles.RoleService;
-import ua.goit.validation.OnCreate;
+import ua.goit.validation.unique.OnCreate;
 
 import java.util.List;
 import java.util.stream.Collectors;
