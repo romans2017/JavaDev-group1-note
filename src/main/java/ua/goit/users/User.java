@@ -14,7 +14,6 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "notes")
 @Entity
 @Table(name = "users")
 public class User implements BaseEntity<UUID> {
