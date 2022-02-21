@@ -35,8 +35,7 @@ public class UserService extends BaseService<User, UserDto> {
     @Override
     public void update(UUID id, UserDto dto) {
         repository.findById(id)
-                .map(user -> {
-                    user.setRoles(new ArrayList<>());
+                .map(user -> {user.setRoles(new ArrayList<>());
                     modelMapper.map(dto, user);
                     user.setPassword(passwordEncoder.encode(dto.getPassword()));
                     return user;
@@ -58,9 +57,5 @@ public class UserService extends BaseService<User, UserDto> {
 
     public boolean isExistByRoleId(UUID role_id) {
         return repository.existsByRoles_Id(role_id);
-    }
-
-    public Long count() {
-        return repository.count();
     }
 }

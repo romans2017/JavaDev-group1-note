@@ -6,6 +6,7 @@ import ua.goit.roles.RoleDto;
 
 @Component
 public class RoleStringConverter implements Converter<RoleDto, String> {
+
     @Override
     public String convert(RoleDto role) {
         return role.getId().toString();

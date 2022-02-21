@@ -1,6 +1,8 @@
 package ua.goit.configuration;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -14,12 +16,13 @@ import ua.goit.roles.RoleDto;
 
 import java.util.Locale;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 
-    private final StringRoleConverter stringRoleConverter;
-    private final RoleStringConverter roleStringConverter;
+    StringRoleConverter stringRoleConverter;
+    RoleStringConverter roleStringConverter;
 
     @Bean
     public LocaleResolver localeResolver() {

@@ -8,6 +8,7 @@ import ua.goit.roles.RoleService;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Component
 @RequiredArgsConstructor
 public class StringRoleConverter implements Converter<String, RoleDto> {
