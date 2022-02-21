@@ -11,6 +11,7 @@ import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class UserDto implements BaseDto {
 
     private UUID id;
-
+   @Pattern(regexp = "^[a-zA-Z0-9]$",groups = {OnCreate.class,OnUpdate.class},message = "User name should have only a-z,A-Z and 0-9  symbols")
     @Length(groups = {OnCreate.class, OnUpdate.class}, min = 5, message = "User name should be at least 5 character.")
     private String name;
 

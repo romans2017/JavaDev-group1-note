@@ -36,4 +36,6 @@ public class NoteService extends BaseService<Note, NoteDto> {
         repository.findByUser_NameIgnoreCase(userName).forEach(item -> dtoList.add(modelMapper.map(item, NoteDto.class)));
         return dtoList;
     }
+
+
 }
