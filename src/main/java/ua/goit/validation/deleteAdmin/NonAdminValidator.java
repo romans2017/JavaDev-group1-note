@@ -3,7 +3,6 @@ package ua.goit.validation.deleteAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import ua.goit.base.BaseService;
-import ua.goit.validation.deleteAdmin.NonAdminValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
