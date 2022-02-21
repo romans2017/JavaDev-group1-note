@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseDto;
 import ua.goit.users.User;
+import ua.goit.users.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,5 +28,5 @@ public class NoteDto implements BaseDto {
     @NotNull
     private AccessType accessType;
 
-    private User user;
+    private UserDto user;
 }

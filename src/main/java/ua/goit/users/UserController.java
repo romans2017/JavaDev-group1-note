@@ -15,13 +15,13 @@ import ua.goit.validation.unique.OnCreate;
 import ua.goit.validation.unique.OnUpdate;
 
 import javax.validation.ConstraintViolationException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Controller
-@PreAuthorize("hasAuthority('admin')")
 @RequestMapping("users")
 @Validated
 public class UserController {
@@ -29,6 +29,7 @@ public class UserController {
     UserService userService;
     RoleService roleService;
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping
     public String getUsers(Model model) {
         List<UserDto> users = userService.findAll();
@@ -38,6 +39,7 @@ public class UserController {
         return "user/users";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("add")
     public String showAddUser(Model model) {
         UserDto user = new UserDto();
@@ -47,6 +49,7 @@ public class UserController {
         return "user/user";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("add")
     public String addUser(Model model, @ModelAttribute("user") @Validated({OnCreate.class}) UserDto user,
                           BindingResult result) {
@@ -59,6 +62,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("{id}")
     public String showEditUser(Model model, @PathVariable UUID id) {
         model.addAttribute("add", false);
@@ -67,6 +71,7 @@ public class UserController {
         return "user/user";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("{userId}")
     public String updateUser(Model model, @PathVariable UUID userId,
                              @ModelAttribute("user") @Validated({OnUpdate.class}) UserDto user, BindingResult result) {
@@ -80,10 +85,18 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("remove_user/{id}")
     public String removeUser(@PathVariable(value = "id") @NonAdminValidation(classService = UserService.class) UUID id) throws ConstraintViolationException {
         userService.delete(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/removeLogout")
+    public String removeLogout(Principal principal) {
+        UserDto user = userService.findByName(principal.getName());
+        userService.delete(user.getId());
+        return "redirect:/logout";
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
