@@ -25,10 +25,6 @@ public class NoteController {
     @GetMapping("list")
     public String getAllNotes(Model model) {
         List<NoteDto> notes = noteService.findAll();
-        notes.forEach(note -> {
-            String text = noteService.markdownToText(note.getText());
-            note.setText(text);
-        });
         model.addAttribute("notes", notes);
         model.addAttribute("countNotes", notes.size());
         return "note/notes";

@@ -21,6 +21,7 @@ import java.util.List;
 @Service
 public class NoteService extends BaseService<Note, NoteDto> implements HtmlConverter {
 
+    int SHORT_TEXT_LENGTH = 100;
     NoteRepository repository;
     UserRepository userRepository;
 
@@ -38,7 +39,16 @@ public class NoteService extends BaseService<Note, NoteDto> implements HtmlConve
     public List<NoteDto> findAll() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         List<NoteDto> dtoList = new ArrayList<>();
-        repository.findByUser_NameIgnoreCase(userName).forEach(item -> dtoList.add(modelMapper.map(item, NoteDto.class)));
+        repository.findByUser_NameIgnoreCase(userName).forEach(item -> {
+            NoteDto map = modelMapper.map(item, NoteDto.class);
+            String text = markdownToText(map.getText());
+            if(text.length() > SHORT_TEXT_LENGTH){
+                map.setText(text.substring(0,SHORT_TEXT_LENGTH) + "...");
+            }else {
+                map.setText(text);
+            }
+            dtoList.add(map);
+        });
         return dtoList;
     }
 
