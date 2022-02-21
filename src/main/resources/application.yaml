@@ -26,13 +26,11 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/h2
-
 ---
 spring:
   config:
     activate:
       on-profile: prod
-
   datasource:
     url: jdbc:postgresql://notesmanagementsystem.cos2rygghoik.us-east-1.rds.amazonaws.com:5432/NMS
     username: ${USER_NAME}
@@ -63,4 +61,3 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/mysql
-

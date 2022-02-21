@@ -25,10 +25,11 @@
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                        href="#" role="button" aria-haspopup="true"
-                       aria-expanded="false">
+                       aria-expanded="false"> <i> Signed in as: </i>
                         <th:block sec:authentication="principal.username"></th:block></a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/logout">Logout</a>
+                        <a class="dropdown-item" href="/users/removeLogout">Remove my profile</a>
                     </div>
                 </div>
             </div>

@@ -1,22 +1,22 @@
 package ua.goit.roles;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
 
+@RequiredArgsConstructor
 @Service
 public class RoleService extends BaseService<Role, RoleDto> {
 
-    @Autowired
-    protected RoleRepository repository;
+    private final RoleRepository repository;
 
     @Override
     public boolean isExist(BaseDto dto) {
         if (dto.getId() == null) {
-            return repository.existsByNameIgnoreCase(((RoleDto) dto).getName());
+            return repository.existsByNameIgnoreCase(dto.getName());
         } else {
-            return repository.existsByNameIgnoreCaseAndIdIsNot(((RoleDto) dto).getName(), dto.getId());
+            return repository.existsByNameIgnoreCaseAndIdIsNot(dto.getName(), dto.getId());
         }
     }
 }

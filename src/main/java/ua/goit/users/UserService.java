@@ -1,11 +1,8 @@
 package ua.goit.users;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
@@ -16,19 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Service
 public class UserService extends BaseService<User, UserDto> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    protected UserRepository repository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    UserRepository repository;
+    RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto create(UserDto dto) {
@@ -40,42 +32,30 @@ public class UserService extends BaseService<User, UserDto> {
         return modelMapper.map(repository.save(model), UserDto.class);
     }
 
-    public List<UserDto> findAll(int pageNumber, int rowPerPage) {
-        List<UserDto> users = new ArrayList<>();
-        Pageable sortedByIdAsc = PageRequest.of(pageNumber - 1, rowPerPage,
-                Sort.by("id").ascending());
-        repository.findAll(sortedByIdAsc).forEach(user -> users.add(
-                modelMapper.map(user, UserDto.class)));
-        return users;
-    }
-
     @Override
     public void update(UUID id, UserDto dto) {
         repository.findById(id)
-                .map(user -> {
-                    user.setRoles(new ArrayList<>());
+                .map(user -> {user.setRoles(new ArrayList<>());
                     modelMapper.map(dto, user);
                     user.setPassword(passwordEncoder.encode(dto.getPassword()));
                     return user;
-                }).ifPresent(user -> repository.save(user));
+                }).ifPresent(repository::save);
+    }
+
+    public UserDto findByName(String name) {
+        return modelMapper.map(repository.findUserByName(name), UserDto.class);
     }
 
     @Override
     public boolean isExist(BaseDto dto) {
         if (dto.getId() == null) {
-            return repository.existsByNameIgnoreCase(((UserDto) dto).getName());
+            return repository.existsByNameIgnoreCase(dto.getName());
         } else {
-            return repository.existsByNameIgnoreCaseAndIdIsNot(((UserDto) dto).getName(), dto.getId());
+            return repository.existsByNameIgnoreCaseAndIdIsNot(dto.getName(), dto.getId());
         }
     }
 
     public boolean isExistByRoleId(UUID role_id) {
         return repository.existsByRoles_Id(role_id);
-    }
-
-
-
-    public Long count() {
-        return repository.count();
     }
 }

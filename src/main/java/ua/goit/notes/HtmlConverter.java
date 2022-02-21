@@ -1,6 +1,6 @@
 package ua.goit.notes;
 
-public interface HtmlService {
+public interface HtmlConverter {
     String markdownToHtml(String markdown);
     String markdownToText(String html);
 }
