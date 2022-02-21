@@ -1,6 +1,8 @@
 package ua.goit.roles;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +15,15 @@ import ua.goit.validation.deleteRole.UserExistValidation;
 import javax.validation.ConstraintViolationException;
 import java.util.UUID;
 
-@Controller
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
+@Controller
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("roles")
 @Validated
 public class RoleController {
 
-    private final RoleService roleService;
+   RoleService roleService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -50,14 +53,14 @@ public class RoleController {
         return "redirect:/roles";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public String showEdit(@PathVariable UUID id, Model model) {
         model.addAttribute("add", false);
         model.addAttribute("role", roleService.find(id));
         return "role/role";
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("{id}")
     public String updateRole(Model model, @PathVariable UUID id, @ModelAttribute("role") @Validated RoleDto role,
                              BindingResult result) {
         if (result.hasErrors()) {

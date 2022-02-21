@@ -18,6 +18,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "roles")
 public class Role implements BaseEntity<UUID> {
+
+  private static final long serialVersionUID = 547622407726427014L;
+
   @Id
   @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")

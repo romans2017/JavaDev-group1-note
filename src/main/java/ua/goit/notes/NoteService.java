@@ -1,7 +1,12 @@
 package ua.goit.notes;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.jsoup.Jsoup;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseService;
@@ -11,17 +16,13 @@ import ua.goit.users.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class NoteService extends BaseService<Note, NoteDto> {
+@Service
+public class NoteService extends BaseService<Note, NoteDto> implements HtmlConverter {
 
-    protected NoteRepository repository;
-    private final UserRepository userRepository;
-
-    @Autowired
-    public void setRepository(NoteRepository repository) {
-        this.repository = repository;
-    }
+    NoteRepository repository;
+    UserRepository userRepository;
 
     @Override
     public NoteDto create(NoteDto dto) {
@@ -39,5 +40,19 @@ public class NoteService extends BaseService<Note, NoteDto> {
         List<NoteDto> dtoList = new ArrayList<>();
         repository.findByUser_NameIgnoreCase(userName).forEach(item -> dtoList.add(modelMapper.map(item, NoteDto.class)));
         return dtoList;
+    }
+
+    @Override
+    public String markdownToHtml(String markdown) {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        return renderer.render(document);
+    }
+
+    @Override
+    public String markdownToText(String markdown) {
+        String s = markdownToHtml(markdown);
+        return Jsoup.parse(s).wholeText();
     }
 }

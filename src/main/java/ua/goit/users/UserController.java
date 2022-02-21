@@ -1,7 +1,8 @@
 package ua.goit.users;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +18,16 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
+@Controller
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("users")
 @Validated
 public class UserController {
 
-    private final UserService userService;
-    private final RoleService roleService;
+    UserService userService;
+    RoleService roleService;
 
     @GetMapping
     public String getUsers(Model model) {
@@ -45,7 +47,7 @@ public class UserController {
         return "user/user";
     }
 
-    @PostMapping(value = "add")
+    @PostMapping("add")
     public String addUser(Model model, @ModelAttribute("user") @Validated({OnCreate.class}) UserDto user,
                           BindingResult result) {
         if (result.hasErrors()) {
@@ -65,7 +67,7 @@ public class UserController {
         return "user/user";
     }
 
-    @PostMapping(value = {"{userId}"})
+    @PostMapping("{userId}")
     public String updateUser(Model model, @PathVariable UUID userId,
                              @ModelAttribute("user") @Validated({OnUpdate.class}) UserDto user, BindingResult result) {
         if (result.hasErrors()) {

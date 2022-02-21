@@ -1,7 +1,8 @@
 package ua.goit.notes;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,19 +14,19 @@ import java.util.UUID;
 
 import static ua.goit.notes.AccessType.PUBLIC;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("note")
 public class NoteController {
 
-    private final NoteService noteService;
-    private final HtmlService htmlService;
+    NoteService noteService;
 
     @GetMapping("list")
     public String getAllNotes(Model model) {
         List<NoteDto> notes = noteService.findAll();
         notes.forEach(note -> {
-            String text = htmlService.markdownToText(note.getText());
+            String text = noteService.markdownToText(note.getText());
             note.setText(text);
         });
         model.addAttribute("notes", notes);
@@ -67,7 +68,7 @@ public class NoteController {
     @GetMapping("show_note/{id}")
     public String showNote(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("note", noteService.find(id));
-        model.addAttribute("htmlContent", htmlService.markdownToHtml(noteService.find(id).getText()));
+        model.addAttribute("htmlContent", noteService.markdownToHtml(noteService.find(id).getText()));
         return "note/show_note";
     }
 
@@ -75,10 +76,9 @@ public class NoteController {
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
         NoteDto note = noteService.find(id);
         if (note.getAccessType().equals(PUBLIC)) {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             model.addAttribute("note", note);
-            model.addAttribute("userName", userName);
-            String htmlContent = htmlService.markdownToHtml(note.getText());
+            model.addAttribute("userName", note.getUser().getName());
+            String htmlContent = noteService.markdownToHtml(note.getText());
             model.addAttribute("htmlContent", htmlContent);
             return "note/note_share";
         }

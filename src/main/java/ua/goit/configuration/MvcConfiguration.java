@@ -9,6 +9,7 @@ import ua.goit.configuration.converters.RoleStringConverter;
 import ua.goit.configuration.converters.StringRoleConverter;
 import ua.goit.roles.RoleDto;
 
+@RequiredArgsConstructor
 @Configuration
 @RequiredArgsConstructor
 public class MvcConfiguration implements WebMvcConfigurer {

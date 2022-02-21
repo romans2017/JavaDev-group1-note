@@ -13,8 +13,8 @@ import ua.goit.users.UserRepository;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;

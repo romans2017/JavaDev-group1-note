@@ -1,7 +1,8 @@
 package ua.goit.users;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -9,33 +10,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
-import ua.goit.roles.Role;
 import ua.goit.roles.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
+@Service
 public class UserService extends BaseService<User, UserDto> {
 
-    protected UserRepository repository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public void setRepository(UserRepository repository) {
-        this.repository = repository;
-    }
+    UserRepository repository;
+    RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto create(UserDto dto) {
         User model = modelMapper.map(dto, User.class);
         model.setPassword(passwordEncoder.encode(dto.getPassword()));
         if (dto.getRoles().isEmpty()) {
-            model.setRoles(List.of(Optional.ofNullable(roleRepository.findByNameIgnoreCase("user")).orElse(new Role())));
+            model.setRoles(List.of(roleRepository.findByNameIgnoreCase("user")));
         }
         return modelMapper.map(repository.save(model), UserDto.class);
     }

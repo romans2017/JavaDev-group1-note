@@ -1,6 +1,8 @@
 package ua.goit.users;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +18,15 @@ import ua.goit.validation.unique.OnCreate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Controller
 @RequestMapping
-@RequiredArgsConstructor
 public class RegistrationController {
 
-    private final UserService userService;
-    private final RoleService roleService;
+    UserService userService;
+    RoleService roleService;
+
 
     private List<RoleDto> getRoleByDefault() {
         return roleService.findAll().stream()
@@ -30,13 +34,13 @@ public class RegistrationController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/registration")
+    @GetMapping("registration")
     public String registration(Model model) {
         model.addAttribute("user", new UserDto());
         return "registration";
     }
 
-    @PostMapping("/registration")
+    @PostMapping("registration")
     public String registrationUser(@ModelAttribute("user") @Validated({OnCreate.class}) UserDto user,
                                    BindingResult result,
                                    Model model) {

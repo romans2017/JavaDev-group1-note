@@ -14,9 +14,13 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "notes")
 @Entity
 @Table(name = "users")
 public class User implements BaseEntity<UUID> {
+
+    private static final long serialVersionUID = 8810565761339301095L;
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")

@@ -11,6 +11,7 @@ import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,11 +23,12 @@ public class UserDto implements BaseDto {
 
     private UUID id;
 
-    @Length(groups = {OnCreate.class, OnUpdate.class}, min = 5, message = "User name should be at least 5 character.")
+    @Pattern(regexp = "[a-zA-Z0-9]*",groups = {OnCreate.class,OnUpdate.class},message = "User name should be alphanumeric")
+    @Length(groups = {OnCreate.class, OnUpdate.class}, min = 5, max = 50, message = "User name should be at least 5 character and maximum length of 50.")
     private String name;
 
     @NotBlank(groups = {OnCreate.class, OnUpdate.class})
-    @Length(groups = {OnCreate.class, OnUpdate.class}, min = 5, message = "Password should be at least 5 character.")
+    @Length(groups = {OnCreate.class, OnUpdate.class}, min = 8, max = 100, message = "Password should be at least 8 character and maximum length of 100.")
     private String password;
 
     @NotEmpty(groups = {OnUpdate.class}, message = "User has minimum one role!")
