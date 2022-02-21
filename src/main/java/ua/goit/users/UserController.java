@@ -1,5 +1,6 @@
 package ua.goit.users;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,16 +18,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("users")
 @Validated
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @GetMapping
     public String getUsers(Model model) {

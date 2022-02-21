@@ -1,21 +1,20 @@
 package ua.goit.validation.deleteAdmin;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import ua.goit.base.BaseService;
-import ua.goit.validation.deleteAdmin.NonAdminValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Locale;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class NonAdminValidator implements ConstraintValidator<NonAdminValidation, UUID> {
 
     private BaseService<?, ?> modelService;
-
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     @Override
     public void initialize(NonAdminValidation constraintAnnotation) {

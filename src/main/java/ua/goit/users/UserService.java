@@ -1,7 +1,6 @@
 package ua.goit.users;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,32 +9,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
+import ua.goit.roles.Role;
 import ua.goit.roles.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService extends BaseService<User, UserDto> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
     protected UserRepository repository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public void setRepository(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public UserDto create(UserDto dto) {
         User model = modelMapper.map(dto, User.class);
         model.setPassword(passwordEncoder.encode(dto.getPassword()));
         if (dto.getRoles().isEmpty()) {
-            model.setRoles(List.of(roleRepository.findByNameIgnoreCase("user")));
+            model.setRoles(List.of(Optional.ofNullable(roleRepository.findByNameIgnoreCase("user")).orElse(new Role())));
         }
         return modelMapper.map(repository.save(model), UserDto.class);
     }
@@ -72,8 +72,6 @@ public class UserService extends BaseService<User, UserDto> {
     public boolean isExistByRoleId(UUID role_id) {
         return repository.existsByRoles_Id(role_id);
     }
-
-
 
     public Long count() {
         return repository.count();

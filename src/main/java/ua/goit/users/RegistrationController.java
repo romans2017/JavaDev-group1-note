@@ -1,7 +1,6 @@
 package ua.goit.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,16 +18,11 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping
+@RequiredArgsConstructor
 public class RegistrationController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final RoleService roleService;
 
     private List<RoleDto> getRoleByDefault() {
         return roleService.findAll().stream()

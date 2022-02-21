@@ -1,5 +1,6 @@
 package ua.goit.notes;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NoteService extends BaseService<Note, NoteDto> {
 
-    @Autowired
     protected NoteRepository repository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public void setRepository(NoteRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public NoteDto create(NoteDto dto) {

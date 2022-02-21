@@ -1,13 +1,12 @@
 package ua.goit.roles;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.goit.users.UserService;
 import ua.goit.validation.deleteAdmin.NonAdminValidation;
 import ua.goit.validation.deleteRole.UserExistValidation;
 
@@ -15,16 +14,13 @@ import javax.validation.ConstraintViolationException;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('admin')")
 @RequestMapping("roles")
 @Validated
 public class RoleController {
 
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserService userService;
+    private final RoleService roleService;
 
     @GetMapping
     public String getAll(Model model) {
