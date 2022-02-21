@@ -1,7 +1,6 @@
 package ua.goit.validation.deleteAdmin;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import ua.goit.base.BaseService;
 

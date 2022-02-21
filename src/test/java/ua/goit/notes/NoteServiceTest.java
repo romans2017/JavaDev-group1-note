@@ -4,12 +4,15 @@ package ua.goit.notes;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,11 +23,12 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ComponentScan("ua.goit.notes.*")
-@RunWith(SpringRunner.class)
-@DataJpaTest
+//@ComponentScan("ua.goit")
+//@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@AutoConfigureDataJpa
 @ActiveProfiles("dev")
-//@SpringBootTest
+@SpringBootTest
 //@Import({SpringSecurityConfiguration.class, MvcConfiguration.class})
 //@EnableWebMvc
 class NoteServiceTest {

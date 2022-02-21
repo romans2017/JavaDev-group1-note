@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
-@RequiredArgsConstructor
 public class StringRoleConverter implements Converter<String, RoleDto> {
 
     private final RoleService roleService;
