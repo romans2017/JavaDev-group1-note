@@ -1,6 +1,5 @@
 package ua.goit.notes;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,7 @@ class NoteServiceTest {
     public void updateNote() {
         NoteDto created = noteService.create(noteDto);
         noteDto.setText("la la la");
+        noteDto.setId(created.getId());
         noteService.update(created.getId(), noteDto);
         NoteDto updated = noteService.find(created.getId());
 
@@ -56,11 +56,9 @@ class NoteServiceTest {
     @Test
     public void getNote() {
         NoteDto created = noteService.create(noteDto);
-        noteDto.setText("la la la");
-        noteService.update(created.getId(), noteDto);
         NoteDto updated = noteService.find(created.getId());
 
-        assertThat(updated.getId()).isEqualTo(noteDto.getId());
+        assertThat(updated).isEqualTo(created);
     }
 
     @WithMockUser("user1")
