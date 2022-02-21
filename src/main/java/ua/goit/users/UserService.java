@@ -3,9 +3,6 @@ package ua.goit.users;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
@@ -35,15 +32,6 @@ public class UserService extends BaseService<User, UserDto> {
         return modelMapper.map(repository.save(model), UserDto.class);
     }
 
-    public List<UserDto> findAll(int pageNumber, int rowPerPage) {
-        List<UserDto> users = new ArrayList<>();
-        Pageable sortedByIdAsc = PageRequest.of(pageNumber - 1, rowPerPage,
-                Sort.by("id").ascending());
-        repository.findAll(sortedByIdAsc).forEach(user -> users.add(
-                modelMapper.map(user, UserDto.class)));
-        return users;
-    }
-
     @Override
     public void update(UUID id, UserDto dto) {
         repository.findById(id)
@@ -52,15 +40,19 @@ public class UserService extends BaseService<User, UserDto> {
                     modelMapper.map(dto, user);
                     user.setPassword(passwordEncoder.encode(dto.getPassword()));
                     return user;
-                }).ifPresent(user -> repository.save(user));
+                }).ifPresent(repository::save);
+    }
+
+    public UserDto findByName(String name) {
+        return modelMapper.map(repository.findUserByName(name), UserDto.class);
     }
 
     @Override
     public boolean isExist(BaseDto dto) {
         if (dto.getId() == null) {
-            return repository.existsByNameIgnoreCase(((UserDto) dto).getName());
+            return repository.existsByNameIgnoreCase(dto.getName());
         } else {
-            return repository.existsByNameIgnoreCaseAndIdIsNot(((UserDto) dto).getName(), dto.getId());
+            return repository.existsByNameIgnoreCaseAndIdIsNot(dto.getName(), dto.getId());
         }
     }
 
