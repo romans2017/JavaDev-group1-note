@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static ua.goit.notes.AccessType.PUBLIC;
-
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Controller
@@ -71,7 +69,7 @@ public class NoteController {
     @GetMapping("share/{id}")
     public String showNoteByLink(@PathVariable(value = "id") UUID id, Model model) {
         NoteDto note = noteService.find(id);
-        if (note.getAccessType().equals(PUBLIC)) {
+        if (note.getAccessType().equals(AccessType.PUBLIC)) {
             model.addAttribute("note", note);
             model.addAttribute("userName", note.getUser().getName());
             String htmlContent = noteService.markdownToHtml(note.getText());
