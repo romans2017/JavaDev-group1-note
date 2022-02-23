@@ -9,4 +9,5 @@ There are three profiles for running:
 |mysql|profile use local DB MySQL|
 ### INSTRUCTIONS FOR RUNNING application locally:
 - Customize application.yaml according to chosen DB configuration.
+Environment variables: URL, USER_NAME, DB_PASSWORD
 - Use http://localhost:9999/ to reach the application.
