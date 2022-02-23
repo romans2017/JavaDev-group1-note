@@ -32,7 +32,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://notesmanagementsystem.cos2rygghoik.us-east-1.rds.amazonaws.com:5432/NMS
+    url: ${URL}
     username: ${USER_NAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -51,7 +51,7 @@ spring:
     activate:
       on-profile: mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/nms?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDateTimeCode=false&amp&serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true
+    url: ${URL}
     username: ${USER_NAME}
     password: ${DB_PASSWORD}
   jpa:

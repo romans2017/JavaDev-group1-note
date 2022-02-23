@@ -1,15 +1,18 @@
 package ua.goit.roles;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Service
 public class RoleService extends BaseService<Role, RoleDto> {
 
-    private final RoleRepository repository;
+    RoleRepository repository;
 
     @Override
     public boolean isExist(BaseDto dto) {

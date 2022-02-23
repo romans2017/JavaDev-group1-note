@@ -1,6 +1,7 @@
 package ua.goit.users;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ua.goit.base.BaseDto;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor(force = true)
+@EqualsAndHashCode
 @UniqueValidation(classService = UserService.class, groups = {OnCreate.class, OnUpdate.class})
 public class UserDto implements BaseDto {
 
@@ -29,6 +31,7 @@ public class UserDto implements BaseDto {
 
     @NotBlank(groups = {OnCreate.class, OnUpdate.class})
     @Length(groups = {OnCreate.class, OnUpdate.class}, min = 8, max = 100, message = "Password should be at least 8 character and maximum length of 100.")
+    @EqualsAndHashCode.Exclude
     private String password;
 
     @NotEmpty(groups = {OnUpdate.class}, message = "User has minimum one role!")
